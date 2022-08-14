@@ -1,2 +1,2 @@
 import { chapters } from "./chapters.js";
-console.log(chapters);
+import { items } from "./items.js"
