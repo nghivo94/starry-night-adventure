@@ -1,16 +1,47 @@
-//G
 const chapters = [];
+let currentChapter = 0;
 
 class Chapter {
     constructor(order, title) {
         this.order = order;
         this.title = title;
-        this.gameStatus = undefined;
+
+        let started = 0;
+        this.isStarted = () => {return started===1;}
+        this.start = () => {started = 1;}
+        
+        let savedWorld = undefined;
+        this.getSaved = () => {return savedWorld;}
+        this.save = world => {savedWorld = world;}
+        
+        Object.freeze(this);
     }
 
-    updateStatus (status) {
-        this.gameStatus = status;
-        localStorage.setItem("chapters", JSON.stringify(chapters));
+    static finishChapter (world) {
+        chapters[currentChapter].save(world);
+        const checkPoints = {};
+        for (let i=0; i<chapters.length; i++) {
+            checkPoints[i] = chapters[i].getSaved();
+        }
+        console.log(checkPoints);
+        currentChapter += 1;
+    }
+
+    static startChapter () {
+        chapters[currentChapter].start();
+        const chapterStatus = {};
+        for (let i=0; i<chapters.length; i++) {
+            chapterStatus[i] = chapters[i].isStarted();
+        }
+        console.log(chapterStatus);
+        return {
+            "chapter": "Chapter " + chapters[currentChapter].order,
+            "title": chapters[currentChapter].title
+        };
+    }
+
+    static replayChapter (chapter) {
+
     }
 }
 
@@ -23,4 +54,6 @@ chapters.push(
     new Chapter(5, "Of Flowers and Virtue"),
     new Chapter(6, "Of Kings and Pawns"));
 
-export {chapters};
+Object.freeze(chapters);
+
+export { Chapter }
