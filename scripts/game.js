@@ -1,6 +1,4 @@
-import { chapters } from "./chapters.js";
-import { items } from "./items.js";
+import { Chapter } from "./chapters.js";
+import { Item } from "./items.js";
 import { Effect } from "./effects.js";
 
-const effect = new Effect("trye", "me");
-console.log(effect);
