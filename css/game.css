@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Alegreya:ital@0;1&family=Eagle+Lake&family=Montserrat:wght@300&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap');
 * {
     margin: 0 0;
     text-decoration: none;
@@ -47,6 +47,7 @@ nav > ul > li {
 }
 nav > ul > li > a {
     font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
     text-decoration: none;
     font-size: 16px;
 }
@@ -72,8 +73,131 @@ main {
 .description {
     position: relative;
     background-color: white;
+    border-radius: 20px;
+}
+
+.title {
+    box-sizing: border-box;
+    width: 100%;
+    position: absolute;
+    color: black;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    padding: 10px 20px;
+    height: 45px;
+    vertical-align: center;
+}
+
+.content {
+    overflow-y: scroll;
+    -ms-overflow-style: none; 
+    scrollbar-width: none;
+}
+.content::-webkit-scrollbar { 
+    display: none;
 }
 
 .control-panel {
-    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px;
+}
+
+.controls {
+    background-color: rgba(48, 48, 48, 0.7);
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    height: 25vh;
+    align-items: stretch;
+    border-radius: 20px;
+    margin-bottom: 2vw;
+}
+
+.movement-container {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.movement {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    align-items: normal;
+    width: fit-content;
+    height: fit-content;
+}
+
+.direction {
+    background-color: black;
+    border: 1px white solid;
+    border-radius: 20px;
+    color: white;
+    width: 50px;
+    height: 40px;
+}
+
+#n-button {
+    grid-column: 2;
+    grid-row: 1;
+}
+#w-button {
+    grid-column: 1;
+    grid-row: 2;
+}
+#s-button {
+    grid-column: 2;
+    grid-row: 3;
+}
+#e-button {
+    grid-column: 3;
+    grid-row: 2;
+}
+
+.commands {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 3vh 1vh;
+    background-color: rgb(174, 172, 104);
+    border-radius: 0px 20px 20px 0px;
+}
+
+.auxiliary {
+    background: none;
+    border: none;
+    font-size: 20px;
+}
+
+.text-command {
+    background-color: white;
+    flex-grow: 1;
+    border-radius: 20px;
+    position: relative;
+    white-space: nowrap;
+    overflow-x: hidden;
+}
+
+.text-command label {
+    position: absolute;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+#command {
+    border: none;
+    margin-left: 10px;
+    font-size: 16px;
+    font-family: "Alegreya", sans-serif;
+    display: inline;
+}
+
+#command:focus {
+    outline: none;
 }
