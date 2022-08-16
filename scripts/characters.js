@@ -36,7 +36,7 @@ class Character {
         //Current character state, getter and setter
         let status = 0;
         this.getStatus = () => {return status;}
-        this.setStatus = (status) => {return status;}
+        this.setStatus = (newStatus) => {status = newStatus;}
         Object.freeze(this);            //Make character immutable
     }
 
