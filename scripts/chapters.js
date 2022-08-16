@@ -76,7 +76,7 @@ class Chapter {
     // and world state saved in the chosen chapter
     static replayChapter (chapter) {
         if (!chapters[chapter].getSaved()) {
-            return {}; //Return empty object if chosen chapter is not replayable
+            return undefined; //Return undefined if chosen chapter is not replayable
         }
         chapters.forEach((chapter) => {chapter.restart();})
         currentChapter = chapters[chapter];
