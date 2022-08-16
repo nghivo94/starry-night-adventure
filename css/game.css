@@ -253,11 +253,94 @@ main {
 }
 
 #description-pane {
-    font-size: 16px;
+    font-size: 18px;
     font-family: "Alegreya", sans-serif;
     overflow-y: scroll;
-    padding: 0px 20px;
+    max-height: 70vh;
+    padding: 0px 40px;
+    padding-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
 }
-.fill-img {
+#description-pane * {
+    margin-bottom: 30px;
+}
+#description-pane img {
+    margin-bottom: 30px;
+}
+#description-pane .fill-img {
     width: 100%;
+}
+
+#description-pane .text-center {
+    text-align: center;
+}
+
+#description-pane .center-portrait-img {
+    width: 50%;
+    align-self: center;
+}
+
+#description-pane .img-detail {
+    font-size: 16px;
+    font-style: italic;
+    margin-bottom: 8px;
+    align-self: center;
+}
+
+#description-pane .story-telling {
+    padding-left: 20px;
+    border-left: 3px solid grey;
+}
+
+#description-pane .status-description {
+    align-self: center;
+    font-style: italic;
+}
+
+#description-pane .note {
+    font-style: italic;
+}
+#description-pane .block * {
+    margin-bottom: 0px;
+}
+
+#description-pane .float-right-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#description-pane .float-right-container * {
+    margin-bottom: 0px;
+}
+
+#description-pane .float-right-container p {
+    flex-grow: 1;
+}
+
+#description-pane .float-right-container img {
+    max-width: 30%;
+}
+
+#description-pane label {
+    margin-bottom: 0px;
+    padding: 8px 10px;
+    border-bottom: 1px solid grey;
+}
+
+#description-pane input {
+    accent-color: grey;
+    margin-bottom: 0px;
+    margin-right: 10px;
+}
+
+#choose {
+    padding: 8px 0px;
+    margin: 30px 20%;
+    background-color: black;
+    color: white;
+    font-size: 20px;
+    font-family: 'Alegreya', serif;
 }
