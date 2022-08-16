@@ -1,22 +1,39 @@
-//Initialization: a fixed array for all possible effect types (for management)
-const EFFECT_TYPES = ["end", "talk", ""];
-Object.freeze(EFFECT_TYPES);
-
 //Class Effect
 class Effect {
-    constructor (type, target) {
+    constructor (target) {
         this.type = type;
         this.target = target;
-        Object.freeze(this); //Make the object immutable
+        Object.freeze(this.target)  //Make the target immutable
+        Object.freeze(this);        //Make the object immutable
     }
 
-    //Creation method to also check type
+    //Creation using factory method
     static create (type, target) {
-        if (EFFECT_TYPES.includes(type)) {
-            return new Effect(type, target);
+        switch (type) {
+            case "end":
+                return new EndEffect(target);
+            case "talk":
+                return new TalkEffect(target);
+            case "put":
+                return new PutEffect(target);
+            default:
+                return undefined;
         }
-        else return undefined;
     }
+}
+
+class EndEffect extends Effect {
+    getEnding () {return this.target;}
+}
+
+class TalkEffect extends Effect {
+    getCharacter () {return this.target;}
+}
+
+class PutEffect extends Effect {
+    getItem () {return this.target.item;}
+    getArea () {return this.target.area;}
+    getInteractive () {return this.target.interactive;}
 }
 
 export { Effect }
