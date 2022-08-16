@@ -112,7 +112,7 @@ class Character {
 
 Character.create ("", [
     new Dialog(
-        "", 
+        "Tryingg so hard man", 
         {
             "1": new DialogOption(0, [Effect.create("end", "nonstart-end")], "You ignored the dropped object and proceeded as usual."),
             "2": new DialogOption(1, [Effect.create("talk", "shopkeeper")], "You picked up the strange object.")

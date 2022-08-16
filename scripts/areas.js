@@ -38,8 +38,8 @@ class Area {
     getView () {return this.views[this.getStatus()]} //Return view based on status
 
     //Get area information based on area ID, return object containing area information
-    static getArea (areaId) {
-        const chosenArea = areas[areaId];
+    static getArea (areaID) {
+        const chosenArea = areas[areaID];
         return {
             name: chosenArea.name,
             view: chosenArea.getView(),
@@ -47,7 +47,7 @@ class Area {
             items: chosenArea.getItems()
         }
     }
-
+    
     //Creation method to create and add to areas list.
     static create (id, name, views, interactives, items) {
         areas[id] = new Area(id, name, views, interactives, items);

@@ -72,8 +72,8 @@ class Item {
     }
 
     //Get item view of a chosen item, returns item name, view and itemStatus
-    static getItemView (item) {
-        const item = items[item.toLowerCase()];
+    static getItemView (itemName) {
+        const item = items[itemName.toLowerCase()];
         item.inspected();
         const result = {
             name: item.name,
@@ -86,8 +86,8 @@ class Item {
     }
 
     //Get lore of a chosen item, returns item name, view and itemStatus
-    static getItemLore (item) {
-        const item = items[item.toLowerCase()];
+    static getItemLore (itemName) {
+        const item = items[itemName.toLowerCase()];
         item.uncovered();
         const result = {
             name: item.name,

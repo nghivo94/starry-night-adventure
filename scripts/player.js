@@ -12,19 +12,19 @@ class Player {
         let status = STATUS_NONE;
         let target = undefined;
 
-        this.talk = (target) => {
+        this.talk = (newTarget) => {
             status = STATUS_TALKING;
-            target = target;
+            target = newTarget;
         }
 
-        this.interact = (target) => {
+        this.interact = (newTarget) => {
             status = STATUS_INTERACTING;
-            target = target;
+            target = newTarget;
         }
 
-        this.inspect = (target) => {
+        this.inspect = (newTarget) => {
             status = STATUS_INSPECTING;
-            target = target;
+            target = newTarget;
         }
 
         this.back = () => {
@@ -32,9 +32,11 @@ class Player {
             target = undefined;
         }
 
-        this.isInspecting  = () => {status === STATUS_INTERACTING;}
-        this.isInteracting = () => {status === STATUS_INTERACTING;}
-        this.isTalking = () => {status === STATUS_TALKING;}
+        this.isInspecting  = () => {return status === STATUS_INTERACTING;}
+        this.isInteracting = () => {return status === STATUS_INTERACTING;}
+        this.isTalking = () => {return status === STATUS_TALKING}
+        this.isDefault = () => {return status === STATUS_NONE;}
+        this.getTarget = () => {return target;}
     }
 }
 

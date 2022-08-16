@@ -1,7 +1,6 @@
 //Class Effect
 class Effect {
     constructor (target) {
-        this.type = type;
         this.target = target;
         Object.freeze(this.target)  //Make the target immutable
         Object.freeze(this);        //Make the object immutable

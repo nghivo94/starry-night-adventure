@@ -1,4 +1,3 @@
-import { Chapter } from "./chapters.js";
-import { Item } from "./items.js";
-import { Effect } from "./effects.js";
+import { world } from "./world.js";
 
+console.log(world.getView());
