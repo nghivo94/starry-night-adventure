@@ -5,7 +5,9 @@
     text-decoration: none;
     scroll-behavior: smooth;
 }
-
+audio {
+    display: none;
+}
 header {
     position: fixed;
     width: 100%;
@@ -46,10 +48,9 @@ nav > ul > li {
     margin: 0 10px;
 }
 nav > ul > li > a {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 300;
+    font-family: 'Alegreya', serif;
     text-decoration: none;
-    font-size: 16px;
+    font-size: 20px;
 }
 nav > ul > li > a:hover {
     color: rgb(174, 172, 104);
@@ -79,7 +80,6 @@ main {
 .title {
     box-sizing: border-box;
     width: 100%;
-    position: absolute;
     color: black;
     font-family: 'Montserrat', sans-serif;
     font-weight: 600;
@@ -188,6 +188,7 @@ main {
     box-sizing: border-box;
     padding: 10px 20px;
     font-size: 16px;
+    height: 45px;
 }
 
 #command {
@@ -200,6 +201,13 @@ main {
 
 #command:focus {
     outline: none;
+}
+
+#log-pane {
+    margin-top: 45px;
+    font-size: 16px;
+    font-family: "Alegreya", sans-serif;
+    padding: 10px 20px;
 }
 
 .chapter {
@@ -235,9 +243,4 @@ main {
     border: 1px solid rgb(174, 172, 104);
     margin: 3vh 10vw;
     margin-top: 1vh;
-}
-
-.chapter.active {
-    opacity: 1;
-    z-index: 0;
 }
