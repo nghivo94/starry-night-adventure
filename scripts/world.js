@@ -8,7 +8,6 @@ import { Area } from "./areas.js";
 class World {
     constructor () {
         this.player = new Player(0, "C", []);
-        this.player.talk("");
     }
     takeItem (itemName) {
         if (this.player.isDefault()) {
@@ -16,32 +15,19 @@ class World {
 
         }
     }
-    getView () {
-        if (this.player.isDefault()) {
-            const area = Area.getArea(this.player.room + this.player.area);
-            return {
-                viewTitle: area.name,
-                view: area.view,
-                interactives: area.interactives,
-                items: area.items
-            }
-        }
-        else if (this.player.isTalking()) {
-            const talkResult = Character.talk(this.player.getTarget());
-            return {
-                viewTitle: talkResult.name,
-                view: talkResult.dialog
-            }
-        }
-        else if (this.player.isInspecting()) {
-            const item = Item.getItemView(this.player.getTarget());
-            return {
-                viewTitle: item.name,
-                view: item.view
-            }
-        }
-        else {
 
+    init() {
+        this.player.talk("");
+        const talkResult = Character.talk(this.player.getTarget());
+        return {
+            chapter: Chapter.startChapter(),
+            viewTitle: talkResult.name,
+            view: talkResult.dialog,
+            line: `
+                <p>On one starry night, emerge souls of the past whose stories should have been buried...</p>
+                <p>Welcome to Starry Night Adventure game. You can start by using the command 'help' for more information.</p>
+                <p>This is a lore-based, difficult and long text game. It also contains some horror and violent elements. Please consider carefully before playing.</p>
+            `
         }
     }
 }

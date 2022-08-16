@@ -178,11 +178,12 @@ main {
     flex-grow: 1;
     border-radius: 20px;
     position: relative;
-    white-space: nowrap;
     overflow-x: hidden;
 }
 
 .text-command label {
+    
+    white-space: nowrap;
     position: absolute;
     width: 100%;
     box-sizing: border-box;
@@ -201,13 +202,6 @@ main {
 
 #command:focus {
     outline: none;
-}
-
-#log-pane {
-    margin-top: 45px;
-    font-size: 16px;
-    font-family: "Alegreya", sans-serif;
-    padding: 10px 20px;
 }
 
 .chapter {
@@ -243,4 +237,27 @@ main {
     border: 1px solid rgb(174, 172, 104);
     margin: 3vh 10vw;
     margin-top: 1vh;
+}
+
+.content * {
+    margin-bottom: 15px;
+}
+
+#log-pane {
+    margin-top: 45px;
+    font-size: 16px;
+    font-family: "Alegreya", sans-serif;
+    max-height: 40vh;
+    overflow-y: scroll;
+    padding: 0px 20px;
+}
+
+#description-pane {
+    font-size: 16px;
+    font-family: "Alegreya", sans-serif;
+    overflow-y: scroll;
+    padding: 0px 20px;
+}
+.fill-img {
+    width: 100%;
 }

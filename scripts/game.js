@@ -1,14 +1,11 @@
 import { world } from "./world.js";
 
-const descriptionPane = document.querySelector("#description-pane");
-const logPane = document.querySelector("#log-pane");
-document.querySelector("#background-music").volume = 0;
+document.querySelector("#background-music").volume = 0.1;
 
 function init () {
     const initResult = world.init();
     renderChapter(initResult.chapter);
-    logPane.textContent = initResult.line;
-
+    renderWhole(initResult.viewTitle, initResult.view, initResult.line);
 }
 
 function renderChapter (chapter) {
@@ -24,6 +21,12 @@ function renderChapter (chapter) {
             chapterPane.style.zIndex = -1;
         }, 600)
     },1800);
+}
+
+function renderWhole (viewTitle, view, line) {
+    document.querySelector(".title").textContent = viewTitle;
+    document.querySelector("#description-pane").innerHTML = view;
+    document.querySelector("#log-pane").innerHTML = line;
 }
 
 init();
