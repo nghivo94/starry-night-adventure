@@ -65,13 +65,12 @@ class World {
         }
     }
 
-    takeItem (itemName)
 
     handleEffect (effect) {
         switch (effect.type) {
             case "end":
                 world.ended = true;
-                
+                break
             case "":
             default:
 

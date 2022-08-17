@@ -91,11 +91,6 @@ main {
 
 .content {
     overflow-y: scroll;
-    -ms-overflow-style: none; 
-    scrollbar-width: none;
-}
-.content::-webkit-scrollbar { 
-    display: none;
 }
 
 .control-panel {
@@ -256,13 +251,23 @@ main {
     font-size: 18px;
     font-family: "Alegreya", sans-serif;
     overflow-y: scroll;
-    max-height: 70vh;
+    max-height: 65vh;
     padding: 0px 40px;
     padding-bottom: 20px;
     display: flex;
     flex-direction: column;
     justify-content: left;
 }
+
+.content::-webkit-scrollbar {
+    width: 10px;
+}
+   
+.content::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    outline: 1px solid slategrey;
+}
+
 #description-pane * {
     margin-bottom: 30px;
 }
