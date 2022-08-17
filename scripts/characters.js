@@ -127,7 +127,7 @@ Character.create ("", [
         </div>
         <p>As you are roaming around paintings of constellations, a tall man bumps into you. 
             His face is entirely covered with a hood, sunglasses and a mask. 
-            He quickly mumbles an apology and disappear amidst the stream of people towards the exit.</p>
+            He quickly mumbles an apology and disappears amidst the stream of people towards the exit.</p>
         <div class="float-right-container">
             <p>
                 Yet you notice something the man left behind, right beneath your feet.
