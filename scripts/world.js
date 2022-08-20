@@ -3,10 +3,11 @@ import { Item } from "./items.js";
 import { Effect } from "./effects.js";
 import { Player } from "./player.js";
 import { Character } from "./characters.js";
-import { Area } from "./areas.js";
+import { areas } from "./areas.js";
+import { DataHandler } from "./data_handler.js";
 
 function areaInfo (room, location) {
-    const area = Area.getArea(room, location);
+    const area = areas[room + location];
     const result = {
         viewTitle: area.name,
         view: area.view
@@ -24,13 +25,14 @@ class World {
     constructor () {
         this.player = new Player(0, "C", []);
         this.ended = false;
+        this.world = DataHandler.initData();
     }
 
     init() {
         this.player.talk("");
         const talkResult = Character.talk(this.player.getTarget());
         return {
-            chapter: Chapter.startChapter(),
+            chapter: this.world.chapter[0].getInfo(),
             viewTitle: talkResult.name,
             view: talkResult.dialog,
             line: `
