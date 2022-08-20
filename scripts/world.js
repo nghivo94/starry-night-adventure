@@ -25,16 +25,17 @@ class World {
     constructor () {
         this.player = new Player(0, "C", []);
         this.ended = false;
-        this.world = DataHandler.initData();
+        this.resource = DataHandler.initData();
     }
 
     init() {
         this.player.talk("");
-        const talkResult = Character.talk(this.player.getTarget());
+        const talkResult = this.resource["characters"][this.player.getTarget()].getDialog();
         return {
-            chapter: this.world.chapter[0].getInfo(),
-            viewTitle: talkResult.name,
-            view: talkResult.dialog,
+            chapter: this.resource["chapters"][0].getInfo(),
+            viewTitle: this.player.getTarget(),
+            view: talkResult.view,
+            choices: talkResult.choices,
             line: `
                 <p>On one starry night, emerge souls of the past whose stories should have been buried...</p>
                 <p>Welcome to Starry Night Adventure game. You can start by using the command 'help' for more information.</p>

@@ -3,9 +3,12 @@ import { world } from "./world.js";
 document.querySelector("#background-music").volume = 0.1;
 
 function init () {
-    const initResult = world.init();
-    renderChapter(initResult.chapter);
-    renderWhole(initResult.viewTitle, initResult.view, initResult.line);
+    setTimeout(() => {
+        document.querySelector(".loading-page").style.display = "none";
+        const initResult = world.init();
+        renderChapter(initResult.chapter);
+        renderWhole(initResult.viewTitle, initResult.view, initResult.line);
+    }, 7000);
 }
 
 function renderChapter (chapter) {
