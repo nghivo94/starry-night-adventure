@@ -7,21 +7,29 @@ class Chapter {
         this.description = description;
 
         //Starting status attribute, setters and getter
-        let started = 0;
-        this.isStarted = () => {return started===1;}
-        this.start = () => {started = 1;}
-        this.restart = () => {started = 0;}
+        const status = {
+            "started": 0,
+            "reached": 0,
+        }
+        this.isStarted = () => {return status["started"]===1;}
+        this.isReached = () => {return status["reached"]===1;}
+        this.getStatus = () => {return status}
+        this.start = () => {
+            status["started"] = 1;
+            status["reached"] = 1;
+        }
+        this.restart = () => {status["started"] = 0;}
         
         //Saved World attribute, setter and getter
-        let savedWorld = undefined;
-        this.getSaved = () => {return savedWorld;}
-        this.save = world => {savedWorld = world;}
+        let saved = undefined;
+        this.getSaved = () => {return saved;}
+        this.save = (newsaved) => {saved = newsaved;}
         
         //Make object (fixed attributes) immutable
         Object.freeze(this);
     }
     
-    //Get all the replayable chapters, with order, title and description
+    //Check if a chapter is replayable (finished before)
     isReplayable () {
         if (this.getSaved()) {
             return true
@@ -29,43 +37,37 @@ class Chapter {
         return false
     }
 
+    //Get chapter information
     getInfo () {
         return {
-            chapter: "Chapter " + this.order,
-            title: this.title,
-            description: this.description
+            "chapter": "Chapter " + this.order,
+            "title": this.title,
+            "description": this.description
         }
     }
 
+    //Concat chapters status into one single string
     static getStatus(chapters) {
         const chapterStatus = {};
-        chapters.forEach((chapter) => {chapterStatus[chapter.order] = chapter.isStarted();});
+        chapters.forEach((chapter) => {chapterStatus[chapter.order] = chapter.getStatus();});
         return chapterStatus;
     }
 
+    //Concat chapters checkpoint (saved world state) into one single string
     static getCheckpoints (chapters) {
         const checkPoints = {};
         chapters.forEach((chapter) => {checkPoints[chapter.order] = chapter.getSaved();});
         return checkPoints;
     }
 
+    //Get known (reached)chapters into
     static getKnownChapters (chapters) {
         const result = []
         chapters.forEach((chapter) => {
-            if (chapter.isReplayable() || chapter.isStarted()) {
+            if (chapter.isReached()) {
                 result.push(chapter.getInfo())
             }
             else result.push(undefined)
-        })
-        return result
-    }
-
-    static getReplayableChapters (chapters) {
-        const result = []
-        chapters.forEach((chapter) => {
-            if (chapter.isReplayable() || chapter.isStarted()) {
-                result.push(chapter.getInfo())
-            }
         })
         return result
     }
