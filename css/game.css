@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Alegreya:ital@0;1&family=Eagle+Lake&family=Montserrat:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Alegreya:wght@400;600&family=Eagle+Lake&family=Montserrat:wght@300&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap');
 * {
     margin: 0 0;
@@ -13,7 +13,7 @@ header {
     width: 100%;
     background-color: black;
     box-sizing: border-box;
-    padding: 10px 40px;
+    padding: 5px 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -79,7 +79,8 @@ nav > ul > li {
     margin: 0 10px;
 }
 nav > ul > li > a {
-    font-family: 'Alegreya', serif;
+    font-family: 'Alegreya', sans-serif;
+    font-weight: 400;
     text-decoration: none;
     font-size: 20px;
 }
@@ -152,6 +153,7 @@ main {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
+    column-gap: 5px;
     align-items: normal;
     width: fit-content;
     height: fit-content;
@@ -211,6 +213,7 @@ main {
     
     white-space: nowrap;
     position: absolute;
+    top: 0;
     width: 100%;
     box-sizing: border-box;
     padding: 10px 20px;
@@ -223,6 +226,7 @@ main {
     margin-left: 10px;
     font-size: 16px;
     font-family: "Alegreya", sans-serif;
+    font-weight: 400;
     display: inline;
 }
 
@@ -273,6 +277,7 @@ main {
     margin-top: 45px;
     font-size: 16px;
     font-family: "Alegreya", sans-serif;
+    font-weight: 400;
     max-height: 40vh;
     overflow-y: scroll;
     padding: 0px 20px;
@@ -302,81 +307,73 @@ main {
 #description-pane * {
     margin-bottom: 30px;
 }
-#description-pane img {
-    margin-bottom: 30px;
-}
-#description-pane .fill-img {
-    width: 100%;
-}
 
-#description-pane .text-center {
-    text-align: center;
-}
-
-#description-pane .center-portrait-img {
-    width: 50%;
-    align-self: center;
-}
-
-#description-pane .img-detail {
-    font-size: 16px;
-    font-style: italic;
-    margin-bottom: 8px;
-    align-self: center;
-}
-
-#description-pane .story-telling {
-    padding-left: 20px;
-    border-left: 3px solid grey;
-}
-
-#description-pane .status-description {
-    align-self: center;
-    font-style: italic;
-}
-
-#description-pane .note {
-    font-style: italic;
-}
-#description-pane .block * {
-    margin-bottom: 0px;
-}
-
-#description-pane .float-right-container {
+.pop-up-screen {
     display: flex;
-    flex-direction: row;
+    z-index: -1;
+    opacity: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
     justify-content: center;
+    align-items: center;
+    transition: opacity 0.3s ease-in-out;
+}
+.help-pop-up {
+    width: 600px;
+    height: 80vh;
+    background-color: white;
+    box-shadow: 0px 0px 10px 5px black;
+    border: 1px solid white;
+    align-self: center;
+    position: absolute;
+    font-family: 'Alegreya', sans-serif;
+    font-weight: 400;
 }
 
-#description-pane .float-right-container * {
-    margin-bottom: 0px;
+.help-message{
+    height: 91%;
+    overflow-y: scroll;
+    box-sizing: border-box;
+    padding: 10px 20px;
 }
 
-#description-pane .float-right-container p {
-    flex-grow: 1;
+.help-message p,ul {
+    margin: 10px 0px;
 }
 
-#description-pane .float-right-container img {
-    max-width: 30%;
+.help-message hr {
+    margin-top: 30px;
 }
 
-#description-pane label {
-    margin-bottom: 0px;
-    padding: 8px 10px;
-    border-bottom: 1px solid grey;
+.help-message .list-name {
+    font-size: 25px;
+    font-weight: 600;
+    margin-top: 3px;
+    margin-bottom: 15px;
 }
 
-#description-pane input {
-    accent-color: grey;
-    margin-bottom: 0px;
-    margin-right: 10px;
+.help-message .note {
+    font-style: italic;
 }
 
-#choose {
-    padding: 8px 0px;
-    margin: 30px 20%;
+.pop-up-control {
+    height: 9%;
     background-color: black;
     color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 0 20px;
     font-size: 20px;
-    font-family: 'Alegreya', serif;
+}
+
+.pop-up-control button {
+    background: none;
+    color: white;
+    font-size: 20px;
 }

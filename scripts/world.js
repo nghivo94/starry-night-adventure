@@ -31,16 +31,29 @@ class World {
     init() {
         this.player.talk("");
         const talkResult = this.resource["characters"][this.player.getTarget()].getDialog();
+        const currentChapter = this.resource["chapters"][0];
+        currentChapter.start();
         return {
-            chapter: this.resource["chapters"][0].getInfo(),
-            viewTitle: this.player.getTarget(),
-            view: talkResult.view,
-            choices: talkResult.choices,
-            line: `
+            "chapter": currentChapter.getInfo(),
+            "viewTitle": this.player.getTarget(),
+            "view": talkResult.view,
+            "choices": talkResult.choices,
+            "line": `
                 <p>On one starry night, emerge souls of the past whose stories should have been buried...</p>
                 <p>Welcome to Starry Night Adventure game. You can start by using the command 'help' for more information.</p>
-                <p>This is a lore-based, difficult and long text game. It also contains some horror and violent elements. Please consider carefully before playing.</p>
-            `
+                <p>On one starry night, emerge souls of the past whose stories should have been buried...</p>
+                <p>Welcome to Starry Night Adventure game. You can start by using the command 'help' for more information.</p>
+                <p>On one starry night, emerge souls of the past whose stories should have been buried...</p>
+                <p>Welcome to Starry Night Adventure game. You can start by using the command 'help' for more information.</p>
+                <p>On one starry night, emerge souls of the past whose stories should have been buried...</p>
+                <p>Welcome to Starry Night Adventure game. You can start by using the command 'help' for more information.</p>
+            `,
+            "save": [
+                {
+                    "key": "chapters",
+                    "value": Chapter.getStatus(this.resource["chapters"])
+                }
+            ]
         }
     }
 
