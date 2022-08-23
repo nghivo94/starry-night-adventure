@@ -5,6 +5,10 @@
     text-decoration: none;
     scroll-behavior: smooth;
 }
+
+button > * {
+    pointer-events: none;
+}
 audio {
     display: none;
 }
@@ -311,6 +315,7 @@ main {
 
 .pop-up-screen {
     display: flex;
+    z-index: 10;
     opacity: 0;
     background-color: rgba(0, 0, 0, 0.8);
     position: fixed;
@@ -334,7 +339,7 @@ main {
     font-weight: 400;
 }
 
-.help-message{
+.help-message {
     height: 91%;
     overflow-y: scroll;
     box-sizing: border-box;
@@ -373,6 +378,7 @@ main {
 }
 
 .pop-up-control button {
+    border: none;
     background: none;
     color: white;
     font-size: 20px;

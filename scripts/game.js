@@ -5,7 +5,8 @@ document.querySelector("#background-music").volume = 0.1;
 //Using MVC
 
 class Model {
-    constructor() {
+    constructor(controller) {
+        this._controller = controller;
         this.world = new World();
         this.helpMessage = [
             `Welcome to StarryNightAdventure. Here's some useful commands for you to use: `,
@@ -102,10 +103,13 @@ class Model {
     }
 }
 
-
+//View
 class View {
-    constructor() {
-        this.body = document.querySelector('body');
+    constructor(controller) {
+        this._controller = controller;
+        this.body = document.querySelector('body'); //String body for later addition
+
+        //HTML Structuring
         const main = document.querySelector('main');
         
         const description = document.createElement('div');
@@ -184,6 +188,10 @@ class View {
         textCommand.appendChild(this.logPane);
 
         document.querySelector(':root').appendChild(main);
+
+        /*At the final stage, the View class now has:
+        body, viewTitle, descriptionPane, movementButtons, auxiliaryButtons, command, and logPane
+        */
     }
 
     _createIconButton (id, className, iconName) {
@@ -196,6 +204,25 @@ class View {
         return button;
     }
 
+    _renderElement (elementInfo) {
+        const element = document.createElement(elementInfo["tag"]);
+        if (elementInfo["class"]) {
+            element.className = elementInfo["class"];
+        }
+        if (elementInfo["text"]) {
+            element.textContent = elementInfo["text"];
+        }
+        if (elementInfo["src"]) {
+            element.src = elementInfo["src"];
+        }
+        if (elementInfo["children"]) {
+            elementInfo["children"].forEach((child) => {
+                element.appendChild(this._renderElement(child));
+            });
+        }
+    }
+
+    //Rendering a chapter info pane by creating a full-screen pane with chapter name and title
     renderChapter (chapter) {
         const chapterOrder = document.createElement('h1');
         const chapterTitle = document.createElement('h2');
@@ -210,6 +237,8 @@ class View {
         chapterPane.appendChild(chapterTitle);
         
         this.body.appendChild(chapterPane).focus();
+
+        //Make the pane appear for certain amount of time then remove it
         chapterPane.style.opacity = 1;
 
         setTimeout(() => {
@@ -220,6 +249,7 @@ class View {
         },1800);
     }
 
+    //Rendering a loading page by creating a full-screen page with some loading lines
     renderLoading (loadingLines) {
         const bar          = document.createElement('hr');
         const barContainer = document.createElement('div');
@@ -237,40 +267,113 @@ class View {
             loadingPage.appendChild(lineText);
         });
 
+        //Making the page appear for a certain amount of time then remove it
         this.body.appendChild(loadingPage);
         setTimeout(()=>{
             this.body.removeChild(loadingPage);
         }, 7000);
     }
 
+    //Private function to render a full-screen Pop up screen with a popup element at the center
     _renderPopUp (popUpElement) {
         const popUpScreen = document.createElement('div');
         popUpScreen.classList.add('pop-up-screen');
         popUpScreen.appendChild(popUpElement);
 
         this.body.appendChild(popUpScreen).focus();
-        this.popUpScreen.style.opacity = 1;
+        popUpScreen.style.opacity = 1;
     }
 
     removePopUp() {
-        this.popUpScreen.style.opacity = 0;
+        const popUpScreen = document.querySelector('.pop-up-screen');
+        popUpScreen.style.opacity = 0;
         setTimeout(() => {
-            this.popUpScreen.style.zIndex = -1;
+            this.body.removeChild(popUpScreen);
         }, 300);
     }
 
     
-    renderHelp() {
-        this._renderPopUp();
-        setTimeout(()=>{popUp[0].style.display='block'},300);
+    renderHelp(modelHelpMessage) {
+        const helpPopUp = document.createElement('div');
+        helpPopUp.classList.add('help');
+        helpPopUp.classList.add('pop-up');
+
+        const popUpControl = document.createElement('div');
+        popUpControl.classList.add('pop-up-control');
+        popUpControl.textContent = "Help";
+
+        const popUpButton = document.createElement('button');
+        popUpButton.classList.add('pop-up-button');
+        const buttonIcon = document.createElement('i');
+        buttonIcon.className = 'fa-solid fa-xmark';
+        popUpButton.appendChild(buttonIcon);
+        popUpControl.appendChild(popUpButton);
+        helpPopUp.appendChild(popUpControl);
+
+        const helpMessage = document.createElement('div');
+        helpMessage.classList.add('help-message');
+        helpPopUp.appendChild(helpMessage);
+
+        let node = document.createElement('p');
+        node.textContent = modelHelpMessage[0];
+        helpMessage.appendChild(node);
+
+        for (let i = 1; i < modelHelpMessage.length - 1; i++) {
+            const title = document.createElement('h1');
+            title.classList.add('list-name');
+            title.textContent = modelHelpMessage[i]["list-title"];
+            helpMessage.appendChild(title);
+
+            const list = document.createElement('ul');
+            modelHelpMessage[i]["list-items"].forEach((item) => {
+                const ele = document.createElement('li');
+                ele.textContent = `'${item["item-command"]}': ${item["item-description"]}`;
+                list.appendChild(ele);
+            });
+            helpMessage.appendChild(list);
+            helpMessage.appendChild(document.createElement('hr'));
+        }
+
+        node = document.createElement('p');
+        node.textContent = modelHelpMessage[modelHelpMessage.length-1];
+        node.classList.add('note');
+        helpMessage.appendChild(node);
+
+        this._renderPopUp(helpPopUp);
+    }
+
+    bindShowHelp () {
+        this.helpButton.addEventListener('click', () => {
+            this._controller.handleShowHelp();
+        });
+        document.addEventListener('keydown', (event) => {
+            if (event.ctrlKey && event.key === 'q') {
+                this._controller.handleShowHelp();
+            }   
+        });
+    }
+
+    bindClosePopUp () {
+        document.addEventListener('click', (event) => {
+            if (event.target.className === 'pop-up-button') {
+                this._controller.handleClosePopUp();
+            }
+        });
+        document.addEventListener('keydown', (event) => {
+            if (event.ctrlKey && event.key === 'z') {
+                this._controller.handleClosePopUp();
+            }
+        });
     }
 }
 
 
 class Controller {
-    constructor(model, view) {
-        this.model = model;
-        this.view  = view;
+    constructor() {
+        this.model = new Model(this);
+        this.view  = new View(this);
+        this.view.bindShowHelp();
+        this.view.bindClosePopUp();
     }
 
     init () {
@@ -279,12 +382,20 @@ class Controller {
             this.view.renderChapter({
                 "chapter": "Chapter 0",
                 "title": "Of Concidences and Manuscript"
-            })
+            });
         }, 7000);
+    }
+    
+    handleShowHelp () {
+        this.view.renderHelp(this.model.helpMessage);
+    }
+
+    handleClosePopUp() {
+        this.view.removePopUp();
     }
 }
 
-const app = new Controller(new Model(), new View());
+const app = new Controller();
 app.init();
 
 
@@ -319,18 +430,6 @@ function processCommand (command) {
     }
 }
 
-function init () {
-    setTimeout(() => {
-        document.querySelector(".loading-page").style.display = "none";
-        const initResult = world.init();
-        renderChapter(initResult["chapter"]);
-        renderBasic(initResult["viewTitle"], initResult["view"], initResult["line"]);
-        renderChoices (initResult["choices"]);
-        saveData(initResult["save"]);
-    }, 7000);
-}
-
-
 
 //Control
 document.querySelector("#command").addEventListener('keypress', (e) => {
@@ -350,47 +449,6 @@ document.querySelectorAll(".pop-up-control button").forEach((button) => {
     button.addEventListener('click', removePopUp);
 });
 
-
-
-//Rendering
-function renderChapter (chapter) {
-    document.querySelector(".chapter h1").textContent = chapter.chapter;
-    document.querySelector(".chapter h2").textContent = chapter.title;
-    
-    const chapterPane = document.querySelector(".chapter");
-    chapterPane.style.zIndex = 1;
-    chapterPane.style.opacity = 1;
-    setTimeout(() => {
-        chapterPane.style.opacity = 0;
-        setTimeout(() => {
-            chapterPane.style.zIndex = -1;
-        }, 600)
-    },1800);
-}
-
-function renderHelp () {
-    const popupScreen = document.querySelector(".pop-up-screen");
-    popupScreen.style.zIndex = 1;
-    popupScreen.style.opacity = 1;
-}
-
-function removePopUp () {
-    const popupScreen = document.querySelector(".pop-up-screen");
-    popupScreen.style.opacity = 0;
-    setTimeout(() => {
-        popupScreen.style.zIndex = -1;
-    }, 300);
-}
-
-function renderBasic (viewTitle, view, line) {
-    document.querySelector(".title").textContent = viewTitle;
-    document.querySelector("#description-pane").innerHTML = view;
-    document.querySelector("#log-pane").innerHTML = line;
-}
-
-function renderLine (line) {
-    document.querySelector("#log-pane").innerHTML = line;
-}
 
 function renderChoices (choices) {
     const descriptionPane = document.querySelector("#description-pane");
