@@ -33,6 +33,7 @@ header {
 
 .loading-page {
     background-color: black;
+    z-index: 10;
     position: fixed;
     top: 0;
     left: 0;
@@ -235,8 +236,8 @@ main {
 }
 
 .chapter {
+    z-index: 10;
     opacity: 0;
-    z-index: -1;
     background-color: rgba(0, 0, 0, 0.9);
     position: fixed;
     top: 0;
@@ -310,7 +311,6 @@ main {
 
 .pop-up-screen {
     display: flex;
-    z-index: -1;
     opacity: 0;
     background-color: rgba(0, 0, 0, 0.8);
     position: fixed;
@@ -322,7 +322,7 @@ main {
     align-items: center;
     transition: opacity 0.3s ease-in-out;
 }
-.help-pop-up {
+.help.pop-up {
     width: 600px;
     height: 80vh;
     background-color: white;
