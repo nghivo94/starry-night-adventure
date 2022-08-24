@@ -87,14 +87,14 @@ const character_data = [
                     "effects": [
                         {
                             "type": "require",
-                            "target": {
+                            "info": {
                                 "require-type": "chapter",
                                 "require-target": 6
                             }
                         },
                         {
                             "type": "end",
-                            "target": "non-start end"
+                            "info": "non-start end"
                         }
                     ],
                     "line": "You ignored the dropped object and proceeded as usual."
