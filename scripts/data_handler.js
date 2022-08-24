@@ -6,10 +6,14 @@ import { character_data } from "../data/character_data.js"
 
 class DataHandler {
     static initData () {
-        const reader = new WorldReader()
+        const reader = new WorldReader();
+        const local = new LocalReader();
+        const chapters = reader.readChapter(chapter_data);
+        const characters = reader.readCharacter(character_data) 
+        //local.updateChapter(chapters);
         return {
-            "chapters": reader.readChapter(chapter_data),
-            "characters": reader.readCharacter(character_data)
+            "chapters": chapters,
+            "characters": characters
         }
     }
 }
@@ -32,7 +36,7 @@ class WorldReader {
                 const option_data = dialog_data[dialogIndex]["options"];
                 Object.keys(option_data).forEach((key) => {
                     options[key] = new DialogOption(option_data[key]["target"],
-                        option_data[key]["effects"].map((data)=>{return new Effect(data["type"], data["target"]);}),
+                        option_data[key]["effects"].map((data)=>{return Effect.create(data["type"], data["info"]);}),
                         option_data[key]["line"]);
                 });
                 const choices = dialog_data[dialogIndex]["choices"];
@@ -45,4 +49,18 @@ class WorldReader {
     }
 }
 
-export {DataHandler}
+class LocalReader {
+    updateChapter (chapters) {
+        const chapterStatus = JSON.parse(localStorage.getItem("chapters"));
+        for (const [key, value] of Object.entries(chapterStatus)) {
+            if (value["started"] == 1) {
+                chapters[key].start();
+            }
+            else if (value["reached"] == 1) {
+                chapters[key].reach();
+            }
+        }
+    }
+}
+
+export { DataHandler }
