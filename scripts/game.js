@@ -101,6 +101,10 @@ class Model {
         ];
         this.loadingLines = [`"In a way, time is a tragic concept.`, `Moving forwards, passing crossroads, yet there is no going back."`];
     }
+
+    init() {
+        return this.world.init();
+    }
 }
 
 //View
@@ -116,12 +120,20 @@ class View {
         description.classList.add('description');
         main.appendChild(description);
 
-        this.viewTitle = document.createElement('div');
-        this.viewTitle.classList.add('title');
-        this.viewTitle.textContent = "Title";
         this.descriptionPane = document.createElement('div');
         this.descriptionPane.classList.add('content');
         this.descriptionPane.id = 'description-pane';
+
+        this.viewTitle = document.createElement('div');
+        this.viewTitle.classList.add('title');
+
+        this.view = document.createElement('div');
+        this.view.classList.add('view');
+        this.descriptionPane.appendChild(this.view);
+
+        this.choices = document.createElement('div');
+        this.choices.classList.add('choices');
+        this.descriptionPane.appendChild(this.choices);
 
         description.appendChild(this.viewTitle);
         description.appendChild(this.descriptionPane);
@@ -183,7 +195,7 @@ class View {
         label.appendChild(this.command);
 
         this.logPane = document.createElement('div');
-        this.logPane.classList.add('çontent');
+        this.logPane.classList.add('content');
         this.logPane.id = 'log-pane';
         textCommand.appendChild(this.logPane);
 
@@ -220,6 +232,7 @@ class View {
                 element.appendChild(this._renderElement(child));
             });
         }
+        return element;
     }
 
     //Rendering a chapter info pane by creating a full-screen pane with chapter name and title
@@ -247,6 +260,60 @@ class View {
                 this.body.removeChild(chapterPane);
             }, 500);
         },1800);
+    }
+
+    resetRender () {
+        this.viewTitle.innerHTML = '';
+        this.view.innerHTML = '';
+        this.choices.innerHTML = '';
+    }
+
+    renderViewTitle (title) {
+        this.viewTitle.textContent = title;
+    }
+
+    renderView (view) {
+        this.view.innerHTML = '';
+        view.forEach((nodeInfo) => {
+            this.view.appendChild(this._renderElement(nodeInfo));
+        });
+    }
+
+    renderChoices (choices) {
+        this.choices.innerHTML = '';
+
+        const choiceText = document.createElement('p');
+        choiceText.textContent = "Choices: ";
+        this.choices.appendChild(choiceText);
+
+        for (let i=0; i < choices.length; i++) {
+            const label = document.createElement('label');
+            label.textContent = choices[i];
+            this.choices.appendChild(label);
+
+            const choiceInput = document.createElement('input');
+            choiceInput.name = 'choice';
+            choiceInput.value = ""+(i+1);
+            choiceInput.type = 'radio';
+            label.prepend(choiceInput);
+        }
+
+        const chooseButton = document.createElement('button');
+        chooseButton.id = 'choose';
+        chooseButton.textContent = "Choose";
+        this.choices.appendChild(chooseButton);
+
+        const noteText = document.createElement('p');
+        noteText.classList.add('note');
+        noteText.textContent = `Choose an option or type 'choose 1/2/...'`;
+        this.choices.appendChild(noteText);
+    }
+
+    renderLine (lines) {
+        this.logPane.innerHTML = '';
+        lines.forEach((nodeInfo) => {
+            this.logPane.appendChild(this._renderElement(nodeInfo));
+        });
     }
 
     //Rendering a loading page by creating a full-screen page with some loading lines
@@ -342,17 +409,6 @@ class View {
         this._renderPopUp(helpPopUp);
     }
 
-    bindShowHelp () {
-        this.helpButton.addEventListener('click', () => {
-            this._controller.handleShowHelp();
-        });
-        document.addEventListener('keydown', (event) => {
-            if (event.ctrlKey && event.key === 'q') {
-                this._controller.handleShowHelp();
-            }   
-        });
-    }
-
     bindClosePopUp () {
         document.addEventListener('click', (event) => {
             if (event.target.className === 'pop-up-button') {
@@ -365,6 +421,42 @@ class View {
             }
         });
     }
+
+    bindCommand () {
+        this.command.addEventListener('keypress', (e) => {
+            if (e.key == 'Enter') {
+                this._controller.handleCommand(this.command.value.trim());
+            }
+        });
+
+        this._bindCommandHelp();
+        this._bindCommandChoose();
+    }
+
+    _bindCommandHelp () {
+        this.helpButton.addEventListener('click', () => {
+            this._controller.handleCommand("help");
+        });
+        document.addEventListener('keydown', (event) => {
+            if (event.ctrlKey && event.key === 'q') {
+                this._controller.handleCommand("help");
+            }   
+        });
+    }
+
+    _bindCommandChoose () {
+        document.addEventListener('click', (event) => {
+            if (event.target.id == "choose") {
+                let modifier = "";
+                document.querySelectorAll('input[type="radio"]').forEach((input) => {
+                    if (input.checked) {
+                        modifier = input.value;
+                    }
+                });
+                this._controller.handleCommand(("choose "+modifier).trim());
+            }
+        });
+    }
 }
 
 
@@ -372,17 +464,14 @@ class Controller {
     constructor() {
         this.model = new Model(this);
         this.view  = new View(this);
-        this.view.bindShowHelp();
         this.view.bindClosePopUp();
+        this.view.bindCommand();
     }
 
     init () {
         this.view.renderLoading(this.model.loadingLines);
         setTimeout(()=>{
-            this.view.renderChapter({
-                "chapter": "Chapter 0",
-                "title": "Of Concidences and Manuscript"
-            });
+            this._displayChange(this.model.init());
         }, 7000);
     }
     
@@ -393,81 +482,62 @@ class Controller {
     handleClosePopUp() {
         this.view.removePopUp();
     }
+
+    handleCommand (command) {
+        const appropriateRegex = /^([A-Z0-9]|\s)+$/i
+        const verbRegex = /^[A-Z]+/i
+        if (appropriateRegex.test(command) && verbRegex.test(command)) {
+            const verb = command.match(verbRegex)[0];
+            let modifier = undefined;
+            if (command.length > verb.length) {
+                modifier = command.substring(verb.length);
+            }
+            switch (verb.toLowerCase()) {
+                case "help":
+                    this.view.renderHelp(this.model.helpMessage);
+                    break;
+                case "choose":
+                    if (!modifier) {
+                        console.log("Please choose an option");
+                    }
+                    else {
+                        console.log("Choose" + modifier);
+                    }
+                    break;
+                default:
+                    this.view.renderLine([{
+                        "tag": 'p',
+                        "text": `Unrecognized command. Please try again or type 'help' to check command list.` 
+                    }]);
+                    break;
+            }
+        }
+        else {
+            this.view.renderLine([{
+                "tag": 'p',
+                "text": `Please only use alphabetic characters or numbers.` 
+            }]);
+        }
+    }
+
+    _displayChange (change) {
+        if (change["chapter"]) {
+            this.view.renderChapter(change["chapter"]);
+        }
+        if (change["viewTitle"]) {
+            this.view.renderViewTitle(change["viewTitle"]);
+        }
+        if (change["view"]) {
+            this.view.renderView(change["view"]);
+        }
+        if (change["lines"]) {
+            this.view.renderLine(change["lines"]);
+        }
+        if (change["choices"]) {
+            this.view.renderChoices(change["choices"]);
+        }
+    }
 }
 
 const app = new Controller();
 app.init();
-
-
-/*
-function saveData (entries) {
-    entries.forEach((entry) => {
-        localStorage.setItem(entry["key"], JSON.stringify(entry["value"]));
-    });
-}
-
-function processCommand (command) {
-    const appropriateRegex = /^([A-Z0-9]|\s)+$/i
-    const verbRegex = /^[A-Z]+/i
-    if (appropriateRegex.test(command) && verbRegex.test(command)) {
-        const verb = command.match(verbRegex)[0];
-        let modifier = undefined;
-        if (command.length > verb.length) {
-            modifier = command.substring(verb.length);
-        }
-        switch (verb.toLowerCase()) {
-            case "help":
-                renderHelp();
-                break;
-            default:
-                break;
-        }
-    }
-    else {
-        renderLine(`
-            <p>In appropriate input, please only enter alphabet characters.</p>
-        `)
-    }
-}
-
-
-//Control
-document.querySelector("#command").addEventListener('keypress', (e) => {
-    if (e.key == 'Enter') {
-        processCommand(document.querySelector("#command").value.trim());
-    }
-});
-document.querySelector("#help-button").addEventListener('click', () => {
-    renderHelp();
-})
-document.addEventListener('keydown', function(event) {
-    if (event.ctrlKey && event.key === 'z') {
-      removePopUp();
-    }
-});
-document.querySelectorAll(".pop-up-control button").forEach((button) => {
-    button.addEventListener('click', removePopUp);
-});
-
-
-function renderChoices (choices) {
-    const descriptionPane = document.querySelector("#description-pane");
-    descriptionPane.innerHTML += `
-        <p class="note">Choose an option or use text command 'choose 1/2/3...' to choose an option.</p>
-    `
-    descriptionPane.innerHTML += `
-        <p>Choices: </p>
-    `
-    let choiceNumber = 1;
-    choices.forEach((choice) => {
-        descriptionPane.innerHTML += `
-        <label><input type="radio" name="choice" value="${choiceNumber}"/>${choice}</label>`
-        choiceNumber += 1;
-    });
-    descriptionPane.innerHTML += `
-        <button id="choose">Choose</button>
-    `
-}
-
-init();
-*/

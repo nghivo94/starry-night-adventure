@@ -38,16 +38,16 @@ class World {
             "viewTitle": this.player.getTarget(),
             "view": talkResult.view,
             "choices": talkResult.choices,
-            "line": `
-                <p>On one starry night, emerge souls of the past whose stories should have been buried...</p>
-                <p>Welcome to Starry Night Adventure game. You can start by using the command 'help' for more information.</p>
-                <p>On one starry night, emerge souls of the past whose stories should have been buried...</p>
-                <p>Welcome to Starry Night Adventure game. You can start by using the command 'help' for more information.</p>
-                <p>On one starry night, emerge souls of the past whose stories should have been buried...</p>
-                <p>Welcome to Starry Night Adventure game. You can start by using the command 'help' for more information.</p>
-                <p>On one starry night, emerge souls of the past whose stories should have been buried...</p>
-                <p>Welcome to Starry Night Adventure game. You can start by using the command 'help' for more information.</p>
-            `,
+            "lines": [
+                {
+                    "tag": 'p',
+                    "text": `On one starry night, emerge souls of the past whose stories should have been buried...`
+                },
+                {
+                    "tag": 'p',
+                    "text": `Welcome to Starry Night Adventure game. You can start by using the command 'help' for more information.`
+                }
+            ],
             "save": [
                 {
                     "key": "chapters",
@@ -82,15 +82,10 @@ class World {
     }
 
 
-    handleEffect (effect) {
-        switch (effect.type) {
-            case "end":
-                world.ended = true;
-                break
-            case "":
-            default:
-
-        }
+    _handleEffect (effects) {
+        resultingChange = {};
+        
+        return resultingChange;
     }
 }
 
@@ -108,4 +103,4 @@ function inputHandler (verb, modifier) {
         
     }
 }
-export { world }
+export { world, World }

@@ -288,6 +288,10 @@ main {
     padding: 0px 20px;
 }
 
+#log-pane * {
+    margin-bottom: 30px;
+}
+
 #description-pane {
     font-size: 18px;
     font-family: "Alegreya", sans-serif;
