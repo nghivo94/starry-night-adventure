@@ -1,3 +1,5 @@
+import { Effect } from "./effects.js";
+
 //Class DialogOption represents possible choices and effects of those choices in a dialog
 class DialogOption {
     constructor (target, effects, line) {
@@ -14,7 +16,7 @@ class Dialog {
     constructor (view, options, choices) {
         this.view = view;               //View structure of this dialog
         this.options = options;         //Possible dialog options
-        this.choices = choices;         //Visibel choices
+        this.choices = choices;         //Visible choices
         Object.freeze(this.options);    //Make options immutable after creation
         Object.freeze(this);            //Make the dialog immutable
     }    
@@ -54,16 +56,20 @@ class Character {
     }
 
     //React based on user input, return effects of the choice and return line
+    /**
+     * 
+     * @param {String} input user's choice / user input
+     * @returns {{effects: Array<Effect>, lines: String}} Object containing effects of that option and the line describing that option
+     */
     reactInput (input) {
         const currentDialog = this.dialogs[this.getStatus()];
-
         //Check if the input is in the given options
         if (Object.keys(currentDialog.options).includes(input.toLowerCase())) {
-            const chosenOption = options[input.toLowerCase()];
+            const chosenOption = currentDialog.options[input.toLowerCase()];
             this.setStatus(chosenOption.target);
             return {
-                effects: chosenOption.effects,
-                line: chosenOption.line
+                "effects": chosenOption.effects,
+                "lines": chosenOption.line
             }
         }
 
@@ -81,6 +87,17 @@ class Character {
         else {
             return undefined;
         }
+    }
+
+    /**
+     * @param {{name: Character}} characters
+     */
+    static getSaving (characters) {
+        const result = {};
+        Object.keys(characters).forEach((name)=> {
+            result[name] = characters[name].getStatus();
+        });
+        return result;
     }
 }
 

@@ -77,10 +77,15 @@ const character_data = [
                     "effects": [
                         {
                             "type": "talk",
-                            "target": ""
+                            "info": ""
                         }
                     ],
-                    "line": "You picked up the chess piece."
+                    "lines": [
+                        {
+                            "tag": 'p',
+                            "text": `You picked up the chess piece.`
+                        }
+                    ]
                 },
                 "2": {
                     "target": 0,
@@ -89,7 +94,13 @@ const character_data = [
                             "type": "require",
                             "info": {
                                 "require-type": "chapter",
-                                "require-target": 6
+                                "require-target": 6,
+                                "failure-lines": [
+                                    {
+                                        "tag": 'p',
+                                        "text": `You have not fulfilled the requirements to choose this option.`
+                                    }
+                                ]
                             }
                         },
                         {
@@ -97,7 +108,12 @@ const character_data = [
                             "info": "non-start end"
                         }
                     ],
-                    "line": "You ignored the dropped object and proceeded as usual."
+                    "lines": [
+                        {
+                            "tag": 'p',
+                            "text": `You ignored the dropped object and proceeded as usual.`
+                        }
+                    ]
                 }
             },
             "choices": ["Pick up the chess piece", "Ignore the chess piece"]

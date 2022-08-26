@@ -5,8 +5,7 @@ document.querySelector("#background-music").volume = 0.1;
 //Using MVC
 
 class Model {
-    constructor(controller) {
-        this._controller = controller;
+    constructor() {
         this.world = new World();
         this.helpMessage = [
             `Welcome to StarryNightAdventure. Here's some useful commands for you to use: `,
@@ -109,8 +108,7 @@ class Model {
 
 //View
 class View {
-    constructor(controller) {
-        this._controller = controller;
+    constructor() {
         this.body = document.querySelector('body'); //String body for later addition
 
         //HTML Structuring
@@ -409,42 +407,43 @@ class View {
         this._renderPopUp(helpPopUp);
     }
 
-    bindClosePopUp () {
+    bindClosePopUp (handler) {
         document.addEventListener('click', (event) => {
             if (event.target.className === 'pop-up-button') {
-                this._controller.handleClosePopUp();
+                handler();
             }
         });
         document.addEventListener('keydown', (event) => {
             if (event.ctrlKey && event.key === 'z') {
-                this._controller.handleClosePopUp();
+                handler();
             }
         });
     }
 
-    bindCommand () {
+    bindCommand (handler) {
         this.command.addEventListener('keypress', (e) => {
             if (e.key == 'Enter') {
-                this._controller.handleCommand(this.command.value.trim());
+                handler(this.command.value.trim());
+                this.command.value = '';
             }
         });
 
-        this._bindCommandHelp();
-        this._bindCommandChoose();
+        this._bindCommandHelp(handler);
+        this._bindCommandChoose(handler);
     }
 
-    _bindCommandHelp () {
+    _bindCommandHelp (handler) {
         this.helpButton.addEventListener('click', () => {
-            this._controller.handleCommand("help");
+            handler("help");
         });
         document.addEventListener('keydown', (event) => {
             if (event.ctrlKey && event.key === 'q') {
-                this._controller.handleCommand("help");
+                handler("help");
             }   
         });
     }
 
-    _bindCommandChoose () {
+    _bindCommandChoose (handler) {
         document.addEventListener('click', (event) => {
             if (event.target.id == "choose") {
                 let modifier = "";
@@ -453,7 +452,7 @@ class View {
                         modifier = input.value;
                     }
                 });
-                this._controller.handleCommand(("choose "+modifier).trim());
+                handler(("choose "+modifier).trim());
             }
         });
     }
@@ -462,10 +461,10 @@ class View {
 
 class Controller {
     constructor() {
-        this.model = new Model(this);
-        this.view  = new View(this);
-        this.view.bindClosePopUp();
-        this.view.bindCommand();
+        this.model = new Model();
+        this.view  = new View();
+        this.view.bindClosePopUp(this.handleClosePopUp);
+        this.view.bindCommand(this.handleCommand);
     }
 
     init () {
@@ -474,23 +473,19 @@ class Controller {
             this._displayChange(this.model.init());
         }, 7000);
     }
-    
-    handleShowHelp () {
-        this.view.renderHelp(this.model.helpMessage);
-    }
 
-    handleClosePopUp() {
+    handleClosePopUp = () => {
         this.view.removePopUp();
     }
 
-    handleCommand (command) {
+    handleCommand = (command) => {
         const appropriateRegex = /^([A-Z0-9]|\s)+$/i
         const verbRegex = /^[A-Z]+/i
         if (appropriateRegex.test(command) && verbRegex.test(command)) {
             const verb = command.match(verbRegex)[0];
             let modifier = undefined;
             if (command.length > verb.length) {
-                modifier = command.substring(verb.length);
+                modifier = command.substring(verb.length).trim();
             }
             switch (verb.toLowerCase()) {
                 case "help":
@@ -498,10 +493,13 @@ class Controller {
                     break;
                 case "choose":
                     if (!modifier) {
-                        console.log("Please choose an option");
+                        this.view.renderLine([{
+                            "tag": 'p',
+                            "text": `Please choose an option.`
+                        }]);
                     }
                     else {
-                        console.log("Choose" + modifier);
+                        console.log(this.model.world.choose(modifier));
                     }
                     break;
                 default:

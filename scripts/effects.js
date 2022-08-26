@@ -1,5 +1,10 @@
 //Class Effect
 
+import { chapter_data } from "../data/chapter_data.js";
+import { Chapter } from "./chapters.js";
+import { Character } from "./characters.js";
+import { Player } from "./player.js";
+
 /**
  * Effect Type definition
  * @description represents an effect by internal game elements (i.e. interactives, characters, ...)
@@ -16,9 +21,20 @@ class Effect {
     /**
      * @description requests a list of targets to perform certain actions
      * @abstract
-     * @returns {{type: String, target: String}[]} a list of targeted objects
+     * @returns {Array<{type: String, target: String}>} a list of targeted objects
      */
     requestTargets () {
+        throw new Error("Added abstract Method has no implementation");
+    }
+
+    /**
+     * @description perform effects on provided targets
+     * @abstract
+     * @param {Array<Object>} targets a list of targets to perform effects on
+     * @returns {Boolean} True if the effect is successfully carried out, False otherwise (especially for Require effect)
+     */
+
+    performEffect (targets) {
         throw new Error("Added abstract Method has no implementation");
     }
 
@@ -37,7 +53,7 @@ class Effect {
             case "put":
                 return new PutEffect(info["item"], info["area"], info["interactive"]);
             case "require":
-                return new RequireEffect(info["require-type"], info["require-target"], info["failure-effects"]);
+                return new RequireEffect(info["require-type"], info["require-target"], info["failure-lines"] ,info["failure-effects"]);
             default:
                 return undefined;
         }
@@ -49,6 +65,7 @@ Effect.prototype.abstract = true;
 class EndEffect extends Effect {
     constructor(ending) {
         super();
+        /**@type {String} */
         this.ending = ending;
     }
 
@@ -60,7 +77,18 @@ class EndEffect extends Effect {
             }
         ];
     }
+
+    /**
+     * @param {Array<Ending>} targets the list containing 1 ending element
+     */
+    performEffect (targets) {
+        const ending = targets[0];
+        ending.reach();
+        return true;
+    }
 }
+
+
 class TalkEffect extends Effect {
     constructor(character) {
         super();
@@ -79,7 +107,21 @@ class TalkEffect extends Effect {
             }
         ];
     }
+
+    /**
+     * 
+     * @param {Array<Object>} targets list of targets, the first element being the player, and the second element being the character to talk to
+     */
+    performEffect (targets) {
+        /**@type {Player}*/
+        const player = targets[0];
+        /**@type {Character} */
+        const character = targets[1];
+        player.talk(character.name);
+        return true;
+    }
 }
+
 class PutEffect extends Effect {
     constructor(item, area, interactive) {
         super();
@@ -117,11 +159,14 @@ class PutEffect extends Effect {
         return result;
     }
 }
+
 class RequireEffect extends Effect {
-    constructor(requireTarget, requireType, failureEffects) {
+    constructor(requireTarget, requireType, failureLines, failureEffects) {
         super();
         this.requireTarget = requireTarget;
         this.requireType = requireType;
+        this.failureLines = failureLines;
+        /**@type {Array<Effect>} */
         this.failureEffects = [];
         if (failureEffects) {
             failureEffects.forEach((effectInfo) => {
@@ -135,6 +180,17 @@ class RequireEffect extends Effect {
             "type": this.requireType,
             "target": this.requireTarget
         }];
+    }
+
+    performEffect (targets) {
+        switch (this.requireType) {
+            case "chapter":
+                /**@type {Chapter} */
+                const chapter = targets[0];
+                return chapter.isFinished();
+            default:
+                break;
+        }
     }
 }
 

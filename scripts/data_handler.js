@@ -6,7 +6,7 @@ import { character_data } from "../data/character_data.js"
 
 class DataHandler {
     static initData () {
-        const reader = new WorldReader();
+        const reader = new Reader();
         const local = new LocalReader();
         const chapters = reader.readChapter(chapter_data);
         const characters = reader.readCharacter(character_data) 
@@ -18,7 +18,12 @@ class DataHandler {
     }
 }
 
-class WorldReader {
+class Reader {
+    /**
+     * 
+     * @param {Object} chapter_data 
+     * @returns {Array<Chapter>} array of all chapters in chapter_data
+     */
     readChapter (chapter_data) {
         return chapter_data.map((data) => {
             return new Chapter(data["order"], data["title"], data["description"]);
@@ -37,7 +42,7 @@ class WorldReader {
                 Object.keys(option_data).forEach((key) => {
                     options[key] = new DialogOption(option_data[key]["target"],
                         option_data[key]["effects"].map((data)=>{return Effect.create(data["type"], data["info"]);}),
-                        option_data[key]["line"]);
+                        option_data[key]["lines"]);
                 });
                 const choices = dialog_data[dialogIndex]["choices"];
                 dialogs.push(new Dialog(view, options, choices));
