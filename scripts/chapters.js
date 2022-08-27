@@ -57,6 +57,17 @@ class Chapter {
     isReached () {return this._status["reached"] === 1;}
 
     /**
+     * @description check if a chapter has been finished before
+     * @returns {Boolean} True if the chapter has been finished before
+     */
+    isFinished () {
+        if (this._world) { //If the chapter has a saved world status, it has been finished before
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * @description get information of a chapter for saving purposes
      * @returns {{started: Number, reached: Number, world: *}} Object with status "started" and "reached": value 0 or 1, and "world": stringified value of saved world status for the chapter
      */
