@@ -102,7 +102,7 @@ const character_data = [
                                     }
                                 ]
                             }
-                        },
+                        },                  
                         {
                             "type": "end",
                             "info": "non-start end"
