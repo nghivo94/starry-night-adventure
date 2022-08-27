@@ -6,13 +6,15 @@
  */
 
 class Ending {
-    constructor (title, view, description) {
+    constructor (title, view, description, type) {
         /**@type {String} */
         this.title = title;
         /**@type {Array<Object>} */
         this.view = view;
         /**@type {String} */
         this.description = description;
+        /**@type {String}*/
+        this.type = type;
         this._reached = 0;
     }
 
