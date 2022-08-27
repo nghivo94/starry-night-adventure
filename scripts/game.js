@@ -499,7 +499,7 @@ class Controller {
                         }]);
                     }
                     else {
-                        console.log(this.model.world.choose(modifier));
+                        this._displayChange(this.model.world.choose(modifier));
                     }
                     break;
                 default:

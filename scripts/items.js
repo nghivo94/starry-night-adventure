@@ -1,6 +1,3 @@
-//Initialization: an object to store all items, with item name being object key.
-const items = {};
-
 //Return the status of the item list for storage.
 function getStatus () {
     const itemStatus = {};
@@ -56,57 +53,6 @@ class Item {
             return result;
         }
     }
-
-    //Get all items from a list, with names and descriptions
-    static getItems (itemList) {
-        const result = {};
-        itemList.forEach( (itemName) => {
-            const item = items[itemName.toLowerCase()];
-            result[item.name] = item.description;
-            item.seen();
-        });
-        return {
-            items: result,
-            itemStatus: getStatus()
-        };
-    }
-
-    //Get item view of a chosen item, returns item name, view and itemStatus
-    static getItemView (itemName) {
-        const item = items[itemName.toLowerCase()];
-        item.inspected();
-        const result = {
-            name: item.name,
-            view: item.view
-        };
-        return {
-            item: result,
-            itemStatus: getStatus()
-        };
-    }
-
-    //Get lore of a chosen item, returns item name, view and itemStatus
-    static getItemLore (itemName) {
-        const item = items[itemName.toLowerCase()];
-        item.uncovered();
-        const result = {
-            name: item.name,
-            lore: item.lore
-        };
-        return {
-            item: result,
-            itemStatus: getStatus()
-        };
-    }
-
-    //Convenient way to create item and automatically add to items list.
-    static create (name, origin, description, view, lore) {
-        items[name.toLowerCase()] = new Item(name, origin, description, view, lore);
-    }
 }
 
-
-
-//Fix the items list after adding all items
-Object.freeze(items);
 export { Item }

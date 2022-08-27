@@ -18,7 +18,7 @@ class Chapter {
 
         //Starting status attribute, setters and getter
         /**
-         * @description status of a chapter
+         * Status of a chapter
          * @param {Int} started status "start" of a chapter, default 0
          * @param {Int} reached status "reach" of a chapter, default 0
          */
@@ -33,7 +33,7 @@ class Chapter {
 
 
     /**
-     * @description get information about a chapter for in-game displaying purposes
+     * Get information about a chapter for in-game displaying purposes
      * @returns {{chapter: String, title: String, description: String}} basic information about a chapter
      */
     getInfo () {
@@ -45,19 +45,19 @@ class Chapter {
     }
 
     /**
-     * @description check if the chapter is started in the current game
+     * Check if the chapter is started in the current game
      * @returns {Boolean} True if the chapter is started in the current game, False otherwise
      */
     isStarted () {return this._status["started"] === 1;}
 
     /**
-     * @description check if the user (browser-based) has reached a chapter
+     * Check if the user (browser-based) has reached a chapter
      * @returns {Boolean} True if the user (browser-based) has reached the chapter, False otherwise
      */
     isReached () {return this._status["reached"] === 1;}
 
     /**
-     * @description check if a chapter has been finished before
+     * Check if a chapter has been finished before
      * @returns {Boolean} True if the chapter has been finished before
      */
     isFinished () {
@@ -68,7 +68,7 @@ class Chapter {
     }
 
     /**
-     * @description get information of a chapter for saving purposes
+     * Get information of a chapter for saving purposes
      * @returns {{started: Number, reached: Number, world: *}} Object with status "started" and "reached": value 0 or 1, and "world": stringified value of saved world status for the chapter
      */
     getSaving () {

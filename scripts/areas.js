@@ -36,25 +36,6 @@ class Area {
     }
 
     getView () {return this.views[this.getStatus()]} //Return view based on status
-
-    //Get area information based on area ID, return object containing area information
-    static getArea (room, location) {
-        const chosenArea = areas[room+location];
-        return {
-            name: chosenArea.name,
-            view: chosenArea.getView(),
-            interactives: chosenArea.interactives,
-            items: chosenArea.getItems()
-        }
-    }
-
-    //Remove and adding items
-    static removeItem (room, location, itemName) {
-        return areas[room+location].removeItem(itemName);
-    }
-    static addItem (room, location, itemName) {
-        return areas[room+location].addItem(itemName);
-    }
     
     //Creation method to create and add to areas list.
     static create (id, name, views, interactives, items) {
@@ -64,4 +45,4 @@ class Area {
 
 Object.freeze(areas); //Make areas list immutable
 
-export { Area }
+export { areas }

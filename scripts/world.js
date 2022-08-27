@@ -71,15 +71,7 @@ class World {
                     "save": save
                 };
             }
-            if (this.player.isTalking()) {
-                const talkResult = this.resource["characters"][this.player.getTarget()].getDialog();
-                return {
-                    "viewTitle": this.player.getTarget(),
-                    "view": talkResult.view,
-                    "choices": talkResult.choices,
-                    "lines": choiceResult.lines
-                };
-            }
+            return this._extractFullChange(choiceResult.lines, save);
         }
         return {
             "lines": {
@@ -90,38 +82,41 @@ class World {
     }
 
     /**
-     * 
-     * @param {Array<Effect>} effects 
-     * @returns {{change: Array<String>, lines: Array<Object>}}
+     * Handle a list of effects by extracting requested resources, performing effects and updating changes or failure lines
+     * @param {Array<Effect>} effects a list of given effects
+     * @param {{change: Array<String>, lines: Array<Object>}} previousResult an object containing "change" array and "lines" (failure lines)
+     * @returns {{change: Array<String>, lines: Array<Object>}} result containing "change" array and "lines" (failure lines)
      * @recursive
      */
 
     _handleEffect (effects, previousResult) {
-        let result = {"change": []};
-        if (previousResult) { result = previousResult; }
-        if (effects.length == 0) { return result; }
+        let result = {"change": []};                     //Initiate the result object with "change" array
+        if (previousResult) { result = previousResult; } //If a previous result was given, pass the previous result
+        if (effects.length == 0) { return result; }      //If no previous effect (failure effect) was given, return result
         for (let i = 0; i<effects.length; i++) {
             const effect = effects[i];                      //Get the current effect
             const targets = effect.requestTargets();        //Get the targets of the current effect
             const resources = targets.map((info) => this._extractResource(info["type"], info["target"]));  //Get the targets from world resource
             const effectResult = effect.performEffect(resources); //Perform the effect
             if (!effectResult) { //If effect require fails,
-                if (effect.failureLines) {
+                if (effect.failureLines) { //If effect require has failure lines, update failure lines
                     result["lines"] = effect.failureLines;
                 }
-                return this._handleEffect(effect.failureEffects, result);
+                return this._handleEffect(effect.failureEffects, result); //Recursively call _handleEffect for the failure effects and pass on the result
             }
+            //Remaining lines would not be executed if the effect require fails
+            //Update change for each type of requested targets
             targets.forEach((target) => {
                 result["change"].push(target["type"]);
-            });
+            }); 
         }
-        return result;
+        return result; //Return result
     }
 
     /**
-     * 
-     * @param {String} type 
-     * @param {String} target 
+     * Extract requested resource from world "resource" object
+     * @param {String} type indication for type of requested resource
+     * @param {String} target name/id/title/... indication of requested target
      * @returns {Object} the requested resource.
      */
     _extractResource (type, target) {
@@ -169,6 +164,28 @@ class World {
             }
         });
         return result;
+    }
+
+    _extractFullChange (lines, save) {
+        if (this.player.isDefault()) {
+
+        }
+        else if (this.player.isInspecting()) {
+
+        }
+        else if (this.player.isInteracting()) {
+
+        }
+        else {
+            const talkResult = this.resource["characters"][this.player.getTarget()].getDialog();
+            return {
+                "viewTitle": this.player.getTarget(),
+                "view": talkResult.view,
+                "choices": talkResult.choices,
+                "lines": lines,
+                "save": save
+            };
+        }
     }
 }
 const world = new World();
