@@ -50,16 +50,13 @@
     justify-content: center;
 }
 
-#description-pane .float-right-container * {
-    margin-bottom: 0px;
-}
-
 #description-pane .float-right-container p {
     flex-grow: 1;
 }
 
 #description-pane .float-right-container img {
     max-width: 30%;
+    margin-bottom: 0px;
 }
 
 #description-pane label {
@@ -72,6 +69,10 @@
     accent-color: grey;
     margin-bottom: 0px;
     margin-right: 10px;
+}
+
+#description-pane .non-margin {
+    margin: 0;
 }
 
 #choose {

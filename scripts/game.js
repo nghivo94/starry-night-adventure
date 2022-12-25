@@ -264,6 +264,7 @@ class View {
         this.viewTitle.innerHTML = '';
         this.view.innerHTML = '';
         this.choices.innerHTML = '';
+        this.descriptionPane.scrollTop = 0;
     }
 
     renderViewTitle (title) {
@@ -271,7 +272,7 @@ class View {
     }
 
     renderView (view) {
-        this.view.innerHTML = '';
+        this.resetRender();
         view.forEach((nodeInfo) => {
             this.view.appendChild(this._renderElement(nodeInfo));
         });
@@ -522,11 +523,11 @@ class Controller {
         if (change["chapter"]) {
             this.view.renderChapter(change["chapter"]);
         }
-        if (change["viewTitle"]) {
-            this.view.renderViewTitle(change["viewTitle"]);
-        }
         if (change["view"]) {
             this.view.renderView(change["view"]);
+        }
+        if (change["viewTitle"]) {
+            this.view.renderViewTitle(change["viewTitle"]);
         }
         if (change["lines"]) {
             this.view.renderLine(change["lines"]);

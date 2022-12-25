@@ -62,7 +62,9 @@ class World {
             /**@type {Character} */
             const character = this.resource["characters"][this.player.getTarget()];
             const choiceResult = character.reactInput(modifier);
-            const effectResult = this._handleEffect(choiceResult["effects"]);
+            const effects = choiceResult["effects"]
+            console.log(effects)
+            const effectResult = this._handleEffect(effects, '');
             const save = this._extractSaveInfo(effectResult["change"]);
             /**@type {String} */
             if (effectResult["lines"]) {

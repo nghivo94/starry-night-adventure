@@ -52,7 +52,7 @@ const character_data = [
                             His face is entirely covered with a hood, sunglasses and a mask. 
                             He quickly mumbles an apology and disappears amidst the stream of people towards the exit.`
                         },
-                        {
+                    {
                         "tag": 'div',
                         "class": 'float-right-container',
                         "children": [
@@ -73,11 +73,17 @@ const character_data = [
                 ],
                 "options": {
                     "1": {
-                        "target": 1,
                         "effects": [
                             {
                                 "type": "talk",
                                 "info": ""
+                            },
+                            {
+                                "type": "dialog",
+                                "info": {
+                                    "character": "",
+                                    "target-stage": 1
+                                }
                             }
                         ],
                         "lines": [
@@ -88,13 +94,13 @@ const character_data = [
                         ]
                     },
                     "2": {
-                        "target": 0,
                         "effects": [
                             {
                                 "type": "require",
                                 "info": {
                                     "require-type": "chapter",
                                     "require-target": 6,
+                                    "modifier": "finished",
                                     "failure-lines": [
                                         {
                                             "tag": 'p',
@@ -121,11 +127,76 @@ const character_data = [
             {
                 "view": [
                     {
+                        "tag": 'div',
+                        "class": 'float-right-container',
+                        "children": [
+                            
+                            {
+                                "tag": 'img',
+                                "class": 'float-right-img',
+                                "src": "https://drive.google.com/uc?export=view&id=1eR81kip2DtTodckWQHs_uSa0HaxLdTNY"
+                            },
+                            {
+                                "tag": 'div',
+                                "class": 'non-margin',
+                                "children": [
+                                    {
+                                        "tag": 'p',
+                                        "text": `You pick up the chess piece and head for the reception desk. Yet strangely, no one is there.
+                                            You notice a small piece of paper behind the counter. It seems like a reminder note, with the last line writing `,
+                                        "children": [
+                                            {
+                                                "tag": 'span',
+                                                "class": 'note',
+                                                "text": `17:30 - check security camera.`
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "tag": 'p',
+                                        "text": `You glance across the room at the clock. The movement of its pendulum is mesmerizing: to the left, to the right, swinging rhythmically in the limited span enclosed by its wooden body.
+                                            You look up the time. It says `,
+                                        "children": [
+                                            {
+                                                "tag": 'span',
+                                                "class": 'note',
+                                                "text": `17:45.`
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "tag": 'p',
+                                        "class": 'status-description non-margin',
+                                        "text": `What an unfortunate coincidence.`
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
                         "tag": 'p',
-                        "text": ``
+                        "text": `You keep on waiting, but no one comes back. The museum is closing around `,
+                        "children": [
+                            {
+                                "tag": 'span',
+                                "class": 'note',
+                                "text": `18:15.`
+                            },
+                            {
+                                "tag": 'span',
+                                "text": `You have no choice but to take the chess piece home with you.`
+                            }
+                        ]
                     }
-                    
-                    ]
+                ],
+                "options": {
+                    "1": {
+                        "effects": [],
+                        "lines": [
+                            
+                        ]
+                    }
+                },
             }
         ],
         "appearances": []

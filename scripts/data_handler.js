@@ -40,7 +40,7 @@ class Reader {
                 const options = {};
                 const option_data = dialog_data[dialogIndex]["options"];
                 Object.keys(option_data).forEach((key) => {
-                    options[key] = new DialogOption(option_data[key]["target"],
+                    options[key] = new DialogOption(
                         option_data[key]["effects"].map((data)=>{return Effect.create(data["type"], data["info"]);}),
                         option_data[key]["lines"]);
                 });
@@ -57,12 +57,14 @@ class Reader {
 class LocalReader {
     updateChapter (chapters) {
         const chapterStatus = JSON.parse(localStorage.getItem("chapters"));
-        for (const [key, value] of Object.entries(chapterStatus)) {
-            if (value["started"] == 1) {
-                chapters[key].start();
-            }
-            else if (value["reached"] == 1) {
-                chapters[key].reach();
+        if (chapterStatus) {
+            for (const [key, value] of Object.entries(chapterStatus)) {
+                if (value["started"] == 1) {
+                    chapters[key].start();
+                }
+                else if (value["reached"] == 1) {
+                    chapters[key].reach();
+                }
             }
         }
     }

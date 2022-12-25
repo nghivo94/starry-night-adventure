@@ -48,12 +48,14 @@ class Effect {
         switch (type) {
             case "end":
                 return new EndEffect(info);
+            case "dialog":
+                return new DialogEffect(info["character"], info["target-stage"]);
             case "talk":
                 return new TalkEffect(info);
             case "put":
                 return new PutEffect(info["item"], info["area"], info["interactive"]);
             case "require":
-                return new RequireEffect(info["require-type"], info["require-target"], info["failure-lines"] ,info["failure-effects"]);
+                return new RequireEffect(info["require-type"], info["require-target"], info["modifier"], info["failure-lines"] ,info["failure-effects"]);
             default:
                 return undefined;
         }
@@ -84,6 +86,30 @@ class EndEffect extends Effect {
     performEffect (targets) {
         const ending = targets[0];
         ending.reach();
+        return true;
+    }
+}
+
+class DialogEffect extends Effect {
+    constructor(character, targetStage) {
+        super();
+        this.character = character;
+        this.targetStage = targetStage;
+    }
+
+    requestTargets () {
+        return [
+            {
+                "type": "character",
+                "target": this.character
+            }
+        ]
+    }
+
+    performEffect (targets) {
+        /**@type {Character} */
+        const character = targets[0];
+        character.setStatus(this.targetStage);
         return true;
     }
 }
@@ -161,16 +187,17 @@ class PutEffect extends Effect {
 }
 
 class RequireEffect extends Effect {
-    constructor(requireTarget, requireType, failureLines, failureEffects) {
+    constructor(requireTarget, requireType, modifier, failureLines, failureEffects) {
         super();
         this.requireTarget = requireTarget;
         this.requireType = requireType;
+        this.modifier = modifier;
         this.failureLines = failureLines;
         /**@type {Array<Effect>} */
         this.failureEffects = [];
         if (failureEffects) {
             failureEffects.forEach((effectInfo) => {
-                this.failureEffects.push(Effect.create(effectInfo["type"], effectInfo["targe"]));
+                this.failureEffects.push(Effect.create(effectInfo["type"], effectInfo["info"]));
             });
         }
     }
@@ -178,7 +205,8 @@ class RequireEffect extends Effect {
     requestTargets () {
         return [{
             "type": this.requireType,
-            "target": this.requireTarget
+            "target": this.requireTarget,
+            "modifier": this.modifier
         }];
     }
 

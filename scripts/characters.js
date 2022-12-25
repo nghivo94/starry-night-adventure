@@ -2,8 +2,7 @@ import { Effect } from "./effects.js";
 
 //Class DialogOption represents possible choices and effects of those choices in a dialog
 class DialogOption {
-    constructor (target, effects, line) {
-        this.target = target;           //The next state of the character if the choice is chosen
+    constructor (effects, line) {
         this.effects = effects;         //The effects of the choice
         Object.freeze(this.effects);    //Make effects immutable after creation
         this.line = line;               //A resulting line if this choice is chosen
@@ -66,7 +65,6 @@ class Character {
         //Check if the input is in the given options
         if (Object.keys(currentDialog.options).includes(input.toLowerCase())) {
             const chosenOption = currentDialog.options[input.toLowerCase()];
-            this.setStatus(chosenOption.target);
             return {
                 "effects": chosenOption.effects,
                 "lines": chosenOption.line
@@ -76,7 +74,6 @@ class Character {
         //Check if the options contain "@" which answer to all other inputs
         else if (Object.keys(currentDialog.options).includes("@")) {
             const chosenOption = options["@"];
-            this.setStatus(chosenOption.target);
             return {
                 effects: chosenOption.effects,
                 line: chosenOption.line
