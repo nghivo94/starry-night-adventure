@@ -16,27 +16,48 @@ class Chapter {
         /**@type {String} */
         this.description = description;
 
+        let world = undefined;
+        this.getWorld = () => {return world;}
+        this.setWorld = (newWorld) => {world = newWorld;}
+
         //Starting status attribute, setters and getter
         /**
          * Status of a chapter
          * @param {Int} started status "start" of a chapter, default 0
          * @param {Int} reached status "reach" of a chapter, default 0
+         * @param {Int} finished status "finish" of a chapter, default 0
          */
-        this._status = {
+        let status = {
             "started": 0,
             "reached": 0,
+            "finished": 0
+        };
+        this.start = (world) => {
+            status["started"] = 1;
+            status["reached"] = 1;
+            this.setWorld(world);
         }
-        
-        //Saved World attribute, setter and getter
-        this._world = undefined;
+        this.reStart = () => {
+            status["started"] = 1;
+            return this.getWorld();
+        }
+        this.resetStart = () => {
+            status["started"] = 0;
+        }
+        this.finish = () => {
+            status["finished"] = 1;
+        }
+        this.getStatus = () => {return {...status};}
+        Object.freeze(this);
+
     }
 
 
     /**
-     * Get information about a chapter for in-game displaying purposes
+     * Get all information required for game progression
      * @returns {{chapter: String, title: String, description: String}} basic information about a chapter
      */
-    getInfo () {
+    getFunctionInfo () {
         return {
             "chapter": "Chapter " + this.order,
             "title": this.title,
@@ -45,63 +66,16 @@ class Chapter {
     }
 
     /**
-     * Check if the chapter is started in the current game
-     * @returns {Boolean} True if the chapter is started in the current game, False otherwise
-     */
-    isStarted () {return this._status["started"] === 1;}
-
-    /**
-     * Check if the user (browser-based) has reached a chapter
-     * @returns {Boolean} True if the user (browser-based) has reached the chapter, False otherwise
-     */
-    isReached () {return this._status["reached"] === 1;}
-
-    /**
-     * Check if a chapter has been finished before
-     * @returns {Boolean} True if the chapter has been finished before
-     */
-    isFinished () {
-        if (this._world) { //If the chapter has a saved world status, it has been finished before
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * Get information of a chapter for saving purposes
      * @returns {{started: Number, reached: Number, world: *}} Object with status "started" and "reached": value 0 or 1, and "world": stringified value of saved world status for the chapter
      */
     getSaving () {
         return {
-            "started": this._status["started"],
-            "reached": this._status["reached"],
-            "world": this._world
+            "started": this.getStatus()["started"],
+            "reached": this.getStatus()["reached"],
+            "finished": this.getStatus()["finished"],
+            "world": this.getWorld()
         };
-    }
-
-    /**
-     * @description update "started" status and save starting world of a chapter
-     * @param {*} world 
-     */
-
-    start (world) {
-        this._status["started"] = 1;
-        this._world = world;
-    }
-
-    /**
-     * @description update "started" status of a chapter, used when user restart a later chapter
-     */
-    restart () {
-        this._status["started"] = 1;
-    }
-
-    /**
-     * @description reset "started" status of a chapter, used when user restart a previous chapter
-     */
-
-    resetStart () {
-        this._status["started"] = 0;
     }
 
     //Basic functionalities of Chapter instances are completed.
@@ -127,13 +101,13 @@ class Chapter {
     static replayChapter (chapters, replayedIndex) {
         for (let i = 0; i<chapters.length; i++) {
             if (i <= replayedIndex) { //If a chapter is before the replayed chapter, update "started" status of those chapters
-                chapters[i].restart();
+                chapters[i].reStart();
             }
             else { //Else, reset the "started" status of that chapter
                 chapters[i].resetStart();
             }
         }
-        return chapters[replayedIndex].getSaving().world;
+        return chapters[replayedIndex].getSaving()["world"];
     }
 
     /** 
