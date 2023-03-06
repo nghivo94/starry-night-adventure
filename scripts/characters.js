@@ -2,10 +2,10 @@ import { Effect } from "./effects.js";
 
 //Class DialogOption represents possible choices and effects of those choices in a dialog
 class DialogOption {
-    constructor (effects, line) {
+    constructor (effects, lines) {
         this.effects = effects;         //The effects of the choice
         Object.freeze(this.effects);    //Make effects immutable after creation
-        this.line = line;               //A resulting line if this choice is chosen
+        this.lines = lines;               //A resulting line if this choice is chosen
         Object.freeze(this);            //Make the option immutable
     }
 }
@@ -67,7 +67,7 @@ class Character {
             const chosenOption = currentDialog.options[input.toLowerCase()];
             return {
                 "effects": chosenOption.effects,
-                "lines": chosenOption.line
+                "lines": chosenOption.lines
             }
         }
 
@@ -75,8 +75,8 @@ class Character {
         else if (Object.keys(currentDialog.options).includes("@")) {
             const chosenOption = options["@"];
             return {
-                effects: chosenOption.effects,
-                line: chosenOption.line
+                "effects": chosenOption.effects,
+                "lines": chosenOption.lines
             }
         }
 
