@@ -51,7 +51,7 @@ const character_data = [
                         "text": `As you are roaming around paintings of constellations, a tall man bumps into you. 
                             His face is entirely covered with a hood, sunglasses and a mask. 
                             He quickly mumbles an apology and disappears amidst the stream of people towards the exit.`
-                        },
+                    },
                     {
                         "tag": 'div',
                         "class": 'float-right-container',
@@ -180,14 +180,46 @@ const character_data = [
                             {
                                 "tag": 'span',
                                 "class": 'note',
-                                "text": `18:15.`
+                                "text": `18:15. `
                             },
                             {
                                 "tag": 'span',
                                 "text": `You have no choice but to take the chess piece home with you.`
                             }
                         ]
-                    }
+                    },
+                    {
+                        "tag": 'img',
+                        "class": 'center-portrait-img',
+                        "src": "https://drive.google.com/uc?export=view&id=1JnnVW88vO89btjIsvu_ADFZ-pXX02L8Z"
+                    },
+                    {
+                        "tag": 'img',
+                        "class": 'center-landscape-img',
+                        "src": "https://drive.google.com/uc?export=view&id=1tXi7VX2l0FVk5ZJkZ_jjfPBuvisomGwZ"
+                    },
+                    {
+                        "tag": 'p',
+                        "text": `You lie on your bed, looking out the window. It is a starry night. 
+                            The stars twinkled before your light, like sparkling dust left in the trails of a fairy. 
+                            You wonder if that is true, that the stars are actually remants of some lost souls wandering in the vast universe.`
+                    },
+                    {
+                        "tag": 'div',
+                        "class": 'block text-center',
+                        "children": [
+                            {
+                                "tag": 'p',
+                                "class": 'status-description',
+                                "text": `What would they think, casting their gaze upon the living world?`
+                            },
+                            {
+                                "tag": 'p',
+                                "class": 'status-description',
+                                "text": `Or are they the ones dictating our lives, weaving an overarching manuscript for all?`
+                            }
+                        ]
+                    },
                 ],
                 "options": {
                     "1": {
@@ -197,6 +229,7 @@ const character_data = [
                         ]
                     }
                 },
+                "choices": ["Close your eyes"]
             }
         ],
         "appearances": []
