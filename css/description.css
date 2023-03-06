@@ -20,6 +20,11 @@
     align-self: center;
 }
 
+#description-pane .center-landscape-img {
+    width: 95%;
+    align-self: center;
+}
+
 #description-pane .img-detail {
     font-size: 16px;
     font-style: italic;
