@@ -5,16 +5,20 @@ class Area {
         this.name = name;              
         this.views = views;               //Array of possible views
         this.interactives = interactives; //Array IDs of interactives
-        this.character = character;
+        this.character = character;       //Name of character
         Object.freeze(this.interactives); //Make interactives list immutable
         Object.freeze(this.views); //Make views list immutable
 
         //Variable status, getter and setter
-        let status = 0;
-        this.getStatus = () => {return status;}
-        this.setStatus = (newStatus) => {status = newStatus;}
+        let status = {
+            "state": 0,             //State of the Area, choosing the view to be displayed
+            "reached": 0,        
+        };
+        this.getStatus = () => {return {...status};}
+        this.setState = (newState) => {status["state"] = newState;}
+        this.reached = () => {status["reached"] = 1;}
 
-        //Variable items list, setters and getter based on name
+        //Variable items (item names) list, setters and getter based on name
         let items = [];
         this.addItem = (itemName) => {items.push(itemName.toLowerCase());} //Adding an item
         this.removeItem = (itemName) => {       //Removing an item by filtering
@@ -28,20 +32,34 @@ class Area {
             }
             return undefined; //Item name not in items list, return undefined
         }
-        this._getItems = () => {return [...items];} //Return cloned list of item
+        this.getItems = () => {return [...items];} //Return cloned list of item names
 
         Object.freeze(this); //Make the Area immutable
     }
 
-    getInfo () { //Return all information
+    getFunctionInfo () { //Return all information required for game progression
         return {
             "room": this.id.charAt(0),
             "name": this.name,
-            "view": this.views[this.getStatus()],
+            "view": this.views[this.getStatus()["state"]],
             "interactives": this.interactives,
             "items": this._getItems(),
             "character": this.character,
         }
+    }
+
+    getSaving () { //Return all information to be saved
+        return {
+            "state" : this.getStatus()["state"],
+            "reached" : this.getStatus()["reached"]
+        }
+    }
+
+    static getSaving (areas) {
+        const areaSaving = {};
+        areas.forEach((area) => {
+            areaSaving[area.id] = area.getSaving();
+        });
     }
 }
 

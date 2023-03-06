@@ -3,7 +3,7 @@ import { Item } from "./items.js";
 import { Effect } from "./effects.js";
 import { Player } from "./player.js";
 import { Character } from "./characters.js";
-import { areas } from "./areas.js";
+import { Area } from "./areas.js";
 import { DataHandler } from "./data_handler.js";
 
 class World {
@@ -18,8 +18,9 @@ class World {
         const talkResult = this.resource["characters"][this.player.getTarget()].getDialog();
         const currentChapter = this.resource["chapters"][0];
         currentChapter.start();
+        this._saveData(["chapter"]);
         return {
-            "chapter": currentChapter.getInfo(),
+            "chapter": currentChapter.getFunctionInfo(),
             "viewTitle": this.player.getTarget(),
             "view": talkResult.view,
             "choices": talkResult.choices,
@@ -63,17 +64,18 @@ class World {
             const character = this.resource["characters"][this.player.getTarget()];
             const choiceResult = character.reactInput(modifier);
             const effects = choiceResult["effects"]
-            console.log(effects)
             const effectResult = this._handleEffect(effects, '');
-            const save = this._extractSaveInfo(effectResult["change"]);
+            this._saveData(effectResult["change"]);
+            if (!this.player.isTalking()) {
+                this._saveData(["area"]);
+            }
             /**@type {String} */
             if (effectResult["lines"]) {
                 return {
-                    "lines": effectResult["lines"],
-                    "save": save
+                    "lines": effectResult["lines"]
                 };
             }
-            return this._extractFullChange(choiceResult.lines, save);
+            return this._extractFullChange(choiceResult.lines);
         }
         return {
             "lines": {
@@ -134,12 +136,34 @@ class World {
         }
     }
 
+    _extractFullChange (lines) {
+        if (this.player.isDefault()) {
+            const area = this.player
+
+        }
+        else if (this.player.isInspecting()) {
+
+        }
+        else if (this.player.isInteracting()) {
+
+        }
+        else {
+            const talkResult = this.resource["characters"][this.player.getTarget()].getDialog();
+            return {
+                "viewTitle": this.player.getTarget(),
+                "view": talkResult.view,
+                "choices": talkResult.choices,
+                "lines": lines
+            };
+        }
+    }
+
     /**
      * 
      * @param {Array<String>} change 
      * @returns {Array<{key: String, value: String}>}
      */
-    _extractSaveInfo (change) {
+    _saveData (change) {
         const result = [];
         change.forEach((type) => {
             switch (type) {
@@ -165,30 +189,9 @@ class World {
                     break;
             }
         });
-        return result;
+        DataHandler.saveData(result);
     }
-
-    _extractFullChange (lines, save) {
-        if (this.player.isDefault()) {
-
-        }
-        else if (this.player.isInspecting()) {
-
-        }
-        else if (this.player.isInteracting()) {
-
-        }
-        else {
-            const talkResult = this.resource["characters"][this.player.getTarget()].getDialog();
-            return {
-                "viewTitle": this.player.getTarget(),
-                "view": talkResult.view,
-                "choices": talkResult.choices,
-                "lines": lines,
-                "save": save
-            };
-        }
-    }
+    
 }
 const world = new World();
 

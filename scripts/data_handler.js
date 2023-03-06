@@ -1,27 +1,37 @@
-import {chapter_data}  from "../data/chapter_data.js"
+import { chapter_data }  from "../data/chapter_data.js"
+import { character_data } from "../data/character_data.js"
+import { area_data } from "../data/area_data.js"
 import { Chapter } from "./chapters.js"
 import { Effect } from "./effects.js"
 import { Character, DialogOption, Dialog} from "./characters.js"
-import { character_data } from "../data/character_data.js"
+import { Area } from "./areas.js"
 
 class DataHandler {
     static initData () {
         const reader = new Reader();
         const local = new LocalReader();
         const chapters = reader.readChapter(chapter_data);
-        const characters = reader.readCharacter(character_data) 
+        const characters = reader.readCharacter(character_data);
+        const areas = reader.readArea(area_data);
         //local.updateChapter(chapters);
         return {
             "chapters": chapters,
-            "characters": characters
+            "characters": characters,
+            "areas": areas
         }
+    }
+
+    static saveData (saveInfo) {
+        saveInfo.forEach((pair) => {
+            localStorage.setItem(pair["key"], pair["value"]);
+        });
     }
 }
 
 class Reader {
     /**
      * 
-     * @param {Object} chapter_data 
+     * @param {Array<Object>} chapter_data 
      * @returns {Array<Chapter>} array of all chapters in chapter_data
      */
     readChapter (chapter_data) {
@@ -29,8 +39,14 @@ class Reader {
             return new Chapter(data["order"], data["title"], data["description"]);
         });
     }
+
+    /**
+     * 
+     * @param {Array<Object>} character_data 
+     * @returns {Object} map of each name to its corresponding character
+     */
     readCharacter (character_data) {
-        const result = {}
+        const characters = {}
         for (let characterIndex = 0; characterIndex < character_data.length; characterIndex ++ ) {
             const name = character_data[characterIndex]["name"];
             const dialogs = [];
@@ -48,9 +64,25 @@ class Reader {
                 dialogs.push(new Dialog(view, options, choices));
             }
             const appearances = character_data[characterIndex]["appearances"];
-            result[name] = new Character(name, dialogs, appearances);
+            characters[name] = new Character(name, dialogs, appearances);
         }
-        return result;
+        return characters;
+    }
+
+    /**
+     * 
+     * @param {Array<Object>} area_data 
+     * @returns {Object} map of each id to its corresponding area
+     */
+    readArea (area_data) {
+        const areas = {};
+        const areaList = area_data.map((data) => {
+            return new Area (data["id"], data["name"], data["views"], data["interactives"], data["character"]);
+        });
+        for (let index = 0; index < areaList.length; index ++ ) {
+            areas[areaList[index].name] = areaList[index];
+        }
+        return areas
     }
 }
 
