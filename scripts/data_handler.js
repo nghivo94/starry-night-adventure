@@ -43,7 +43,7 @@ class Reader {
     /**
      * 
      * @param {Array<Object>} character_data 
-     * @returns {Object} map of each name to its corresponding character
+     * @returns {{name: Character}} map of each name to its corresponding character
      */
     readCharacter (character_data) {
         const characters = {}
@@ -72,7 +72,7 @@ class Reader {
     /**
      * 
      * @param {Array<Object>} area_data 
-     * @returns {Object} map of each id to its corresponding area
+     * @returns {{id: Area}} map of each id to its corresponding area
      */
     readArea (area_data) {
         const areas = {};
@@ -80,7 +80,7 @@ class Reader {
             return new Area (data["id"], data["name"], data["views"], data["interactives"], data["character"]);
         });
         for (let index = 0; index < areaList.length; index ++ ) {
-            areas[areaList[index].name] = areaList[index];
+            areas[areaList[index].id] = areaList[index];
         }
         return areas
     }

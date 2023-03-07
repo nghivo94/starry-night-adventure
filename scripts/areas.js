@@ -43,7 +43,7 @@ class Area {
             "name": this.name,
             "view": this.views[this.getStatus()["state"]],
             "interactives": this.interactives,
-            "items": this._getItems(),
+            "items": this.getItems(),
             "character": this.character,
         }
     }

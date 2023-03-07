@@ -54,6 +54,8 @@ class Effect {
                 return new TalkEffect(info);
             case "put":
                 return new PutEffect(info["item"], info["area"], info["interactive"]);
+            case "back":
+                return new BackEffect();
             case "require":
                 return new RequireEffect(info["require-type"], info["require-target"], info["modifier"], info["failure-lines"] ,info["failure-effects"]);
             default:
@@ -144,6 +146,27 @@ class TalkEffect extends Effect {
         /**@type {Character} */
         const character = targets[1];
         player.talk(character.name);
+        return true;
+    }
+}
+
+class BackEffect extends Effect {
+    constructor () {
+        super();
+    }
+
+    requestTargets () {
+        return [
+            {
+                "type": "player",
+                "target": "player"
+            }
+        ]
+    }
+
+    performEffect (targets) {
+        const player = targets[0];
+        player.back();
         return true;
     }
 }

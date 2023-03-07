@@ -223,9 +223,17 @@ const character_data = [
                 ],
                 "options": {
                     "1": {
-                        "effects": [],
+                        "effects": [
+                            {
+                                "type": "back",
+                                "info": ""
+                            }
+                        ],
                         "lines": [
-                            
+                            {
+                                "tag": 'p',
+                                "text": `You closed your eyes to go to sleep. Yet, when you opened your eyes again, you were in a completely unfamiliar place.`
+                            }
                         ]
                     }
                 },

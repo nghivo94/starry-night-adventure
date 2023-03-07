@@ -11,6 +11,7 @@ class World {
         this.player = new Player(0, "C", []);
         this.ended = false;
         this.resource = DataHandler.initData();
+        console.log(this.resource);
     }
 
     init() {
@@ -138,8 +139,12 @@ class World {
 
     _extractFullChange (lines) {
         if (this.player.isDefault()) {
-            const area = this.player
-
+            const areaInfo = this.resource["areas"]["" + this.player.room + this.player.area].getFunctionInfo();
+            return {
+                "viewTitle": areaInfo["name"],
+                "view": areaInfo["view"],
+                "lines": lines
+            };
         }
         else if (this.player.isInspecting()) {
 
