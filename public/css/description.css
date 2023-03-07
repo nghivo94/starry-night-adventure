@@ -1,0 +1,90 @@
+#description-pane .view, .choices {
+    display: flex;
+    flex-direction: column;
+    margin: 0 0;
+}
+
+#description-pane img {
+    margin-bottom: 30px;
+}
+#description-pane .fill-img {
+    width: 100%;
+}
+
+#description-pane .text-center {
+    text-align: center;
+}
+
+#description-pane .center-portrait-img {
+    width: 50%;
+    align-self: center;
+}
+
+#description-pane .center-landscape-img {
+    width: 95%;
+    align-self: center;
+}
+
+#description-pane .img-detail {
+    font-size: 16px;
+    font-style: italic;
+    margin-bottom: 8px;
+    align-self: center;
+}
+
+#description-pane .story-telling {
+    padding-left: 20px;
+    border-left: 3px solid grey;
+}
+
+#description-pane .status-description {
+    align-self: center;
+    font-style: italic;
+}
+
+#description-pane .note {
+    font-style: italic;
+}
+#description-pane .block * {
+    margin-bottom: 0px;
+}
+
+#description-pane .float-right-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#description-pane .float-right-container p {
+    flex-grow: 1;
+}
+
+#description-pane .float-right-container img {
+    max-width: 30%;
+    margin-bottom: 0px;
+}
+
+#description-pane label {
+    margin-bottom: 0px;
+    padding: 8px 10px;
+    border-bottom: 1px solid grey;
+}
+
+#description-pane input[type="radio"] {
+    accent-color: grey;
+    margin-bottom: 0px;
+    margin-right: 10px;
+}
+
+#description-pane .non-margin {
+    margin: 0;
+}
+
+#choose {
+    padding: 8px 0px;
+    margin: 30px 20%;
+    background-color: black;
+    color: white;
+    font-size: 20px;
+    font-family: 'Alegreya', serif;
+}
