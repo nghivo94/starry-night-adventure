@@ -4,9 +4,23 @@ let featureIndex = 0;
 let featureTimer = undefined;
 
 main.addEventListener("scroll", scrollRender);
-featureButtons[0].addEventListener("click", () => {switchFeature(-1);});
-featureButtons[1].addEventListener("click", () => {switchFeature(1);});
 
+featureButtons[0].addEventListener("click", () => {
+  switchFeature(-1);
+  window.clearInterval(featureTimer);
+  featureTimer = undefined;
+  featureTimer = window.setInterval(() => {
+    switchFeature(1);
+  },5000);
+});
+featureButtons[1].addEventListener("click", () => {
+  switchFeature(1);
+  window.clearInterval(featureTimer);
+  featureTimer = undefined;
+  featureTimer = window.setInterval(() => {
+    switchFeature(1);
+  },5000);
+});
 function switchFeature (change) {
   const featureSlides = document.querySelectorAll(".slide");
   featureIndex = (featureIndex+change+featureSlides.length)%featureSlides.length;
@@ -39,7 +53,7 @@ function reveal() {
       const elementBottom = reveals[i].getBoundingClientRect().bottom;
       const elementVisible = 70;
       if ((elementTop < windowHeight - elementVisible) && (elementBottom > elementVisible)) {
-        reveals[i].classList.add("reveal");
+    reveals[i].classList.add("reveal");
       } else {
         reveals[i].classList.remove("reveal");
       }
