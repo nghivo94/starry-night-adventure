@@ -5,7 +5,8 @@ const area_data = [
         "views": [
             [
                 {
-                    
+                   "tag": 'p',
+                   "text": "trying" 
                 }
             ]
         ],
