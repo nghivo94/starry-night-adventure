@@ -2,7 +2,7 @@ import { chapter_data }  from "../../data/chapter_data.js"
 import { character_data } from "../../data/character_data.js"
 import { area_data } from "../../data/area_data.js"
 import { Chapter } from "./chapters.js"
-import { Effect } from "./effects/Effect.js"
+import { EffectFactory } from "./effects/EffectFactory.js"
 import { Character, DialogOption, Dialog} from "./game_objects/Character.js"
 import { Area } from "./game_objects/Area.js"
 
@@ -57,7 +57,7 @@ class Reader {
                 const option_data = dialog_data[dialogIndex]["options"];
                 Object.keys(option_data).forEach((key) => {
                     options[key] = new DialogOption(
-                        option_data[key]["effects"].map((data)=>{return Effect.create(data["type"], data["info"]);}),
+                        option_data[key]["effects"].map((data)=>{return EffectFactory.create(data["type"], data["info"]);}),
                         option_data[key]["lines"]);
                 });
                 const choices = dialog_data[dialogIndex]["choices"];
