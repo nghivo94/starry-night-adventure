@@ -25,7 +25,11 @@ export class EffectFactory {
             case "back":
                 return new BackEffect();
             case "require":
-                return new RequireEffect(info["require-type"], info["require-target"], info["modifier"], info["failure-lines"] ,info["failure-effects"]);
+                let failure_effects = [];
+                if (info["failure-effects"]) {
+                    failure_effects = info["failure-effects"].map(effect_info => {return EffectFactory.create(effect_info["type"], effect_info["info"])});
+                }
+                return new RequireEffect(info["require-type"], info["require-target"], info["modifier"], info["failure-lines"], failure_effects);
             default:
                 return undefined;
         }

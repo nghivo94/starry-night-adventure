@@ -8,16 +8,10 @@ export class RequireEffect extends Effect {
         this.requireType = requireType;
         this.modifier = modifier;
         this.failureLines = failureLines;
-        /**@type {Array<Effect>} */
-        this.failureEffects = [];
-        if (failureEffects) {
-            failureEffects.forEach((effectInfo) => {
-                this.failureEffects.push(Effect.create(effectInfo["type"], effectInfo["info"]));
-            });
-        }
+        this.failureEffects = failureEffects
     }
 
-    requestTargets () {
+    request_targets () {
         return [{
             "type": this.requireType,
             "target": this.requireTarget,
@@ -25,7 +19,7 @@ export class RequireEffect extends Effect {
         }];
     }
 
-    performEffect (targets) {
+    perform_effect (targets) {
         switch (this.requireType) {
             case "chapter":
                 /**@type {Chapter} */

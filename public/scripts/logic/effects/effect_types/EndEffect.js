@@ -6,7 +6,7 @@ export class EndEffect extends Effect {
         this.ending = ending;
     }
 
-    requestTargets () {
+    request_targets () {
         return [
             {
                 "type": "ending",
@@ -18,7 +18,7 @@ export class EndEffect extends Effect {
     /**
      * @param {Array<Ending>} targets the list containing 1 ending element
      */
-    performEffect (targets) {
+    perform_effect (targets) {
         const ending = targets[0];
         ending.reach();
         return true;

@@ -8,7 +8,7 @@ export class DialogEffect extends Effect {
         this.targetStage = targetStage;
     }
 
-    requestTargets () {
+    request_targets () {
         return [
             {
                 "type": "character",
@@ -17,7 +17,7 @@ export class DialogEffect extends Effect {
         ]
     }
 
-    performEffect (targets) {
+    perform_effect (targets) {
         /**@type {Character} */
         const character = targets[0];
         character.setStatus(this.targetStage);

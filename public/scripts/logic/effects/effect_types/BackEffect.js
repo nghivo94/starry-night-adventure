@@ -6,7 +6,7 @@ export class BackEffect extends Effect {
         super();
     }
 
-    requestTargets () {
+    request_targets () {
         return [
             {
                 "type": "player",
@@ -15,7 +15,7 @@ export class BackEffect extends Effect {
         ]
     }
 
-    performEffect (targets) {
+    perform_effect (targets) {
         const player = targets[0];
         player.back();
         return true;

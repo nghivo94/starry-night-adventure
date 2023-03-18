@@ -16,7 +16,7 @@ export class PutEffect extends Effect {
         }
     }
 
-    requestTargets () {
+    request_targets () {
         const result = [];
         result.push({
             "type": "item",

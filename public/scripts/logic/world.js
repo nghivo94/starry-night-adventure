@@ -99,9 +99,9 @@ class World {
         if (effects.length == 0) { return result; }      //If no previous effect (failure effect) was given, return result
         for (let i = 0; i<effects.length; i++) {
             const effect = effects[i];                      //Get the current effect
-            const targets = effect.requestTargets();        //Get the targets of the current effect
+            const targets = effect.request_targets();        //Get the targets of the current effect
             const resources = targets.map((info) => this._extractResource(info["type"], info["target"]));  //Get the targets from world resource
-            const effectResult = effect.performEffect(resources); //Perform the effect
+            const effectResult = effect.perform_effect(resources); //Perform the effect
             if (!effectResult) { //If effect require fails,
                 if (effect.failureLines) { //If effect require has failure lines, update failure lines
                     result["lines"] = effect.failureLines;

@@ -8,7 +8,7 @@ export class TalkEffect extends Effect {
         this.character = character;
     }
 
-    requestTargets () {
+    request_targets () {
         return [
             {
                 "type": "player",
@@ -25,7 +25,7 @@ export class TalkEffect extends Effect {
      * 
      * @param {Array<Object>} targets list of targets, the first element being the player, and the second element being the character to talk to
      */
-    performEffect (targets) {
+    perform_effect (targets) {
         /**@type {Player}*/
         const player = targets[0];
         /**@type {Character} */

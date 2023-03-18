@@ -18,7 +18,7 @@ class Effect {
      * @abstract
      * @returns {Array<{type: String, target: String}>} a list of targeted objects
      */
-    requestTargets () {
+    request_targets () {
         throw new Error("Added abstract Method has no implementation");
     }
 
@@ -29,7 +29,7 @@ class Effect {
      * @returns {Boolean} True if the effect is successfully carried out, False otherwise (especially for Require effect)
      */
 
-    performEffect (targets) {
+    perform_effect (targets) {
         throw new Error("Added abstract Method has no implementation");
     }
 }
