@@ -9,7 +9,7 @@ class InteractOption {
 
 // Class Interactive
 class Interactive {
-    constructor (id, description, view, options, lore) {
+    constructor (id, description, views, options) {
         
     }
 }

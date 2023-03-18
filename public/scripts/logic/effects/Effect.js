@@ -1,9 +1,9 @@
 //Class Effect
 
-import { chapter_data } from "../data/chapter_data.js";
-import { Chapter } from "./chapters.js";
-import { Character } from "./characters.js";
-import { Player } from "./player.js";
+import { chapter_data } from "../../../data/chapter_data.js";
+import { Chapter } from "../chapters.js";
+import { Character } from "../game_objects/Character.js";
+import { Player } from "../player.js";
 
 /**
  * Effect Type definition

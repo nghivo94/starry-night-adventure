@@ -1,9 +1,9 @@
 import { Chapter } from "./chapters.js";
-import { Item } from "./items.js";
-import { Effect } from "./effects.js";
+import { Item } from "./game_objects/Item.js";
+import { Effect } from "./effects/Effect.js";
 import { Player } from "./player.js";
-import { Character } from "./characters.js";
-import { Area } from "./areas.js";
+import { Character } from "./game_objects/Character.js";
+import { Area } from "./game_objects/Area.js";
 import { DataHandler } from "./data_handler.js";
 
 class World {

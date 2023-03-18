@@ -1,4 +1,4 @@
-import { Effect } from "./effects.js";
+import { Effect } from "../effects/Effect.js";
 
 //Class DialogOption represents possible choices and effects of those choices in a dialog
 class DialogOption {

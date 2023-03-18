@@ -1,4 +1,4 @@
-import { world, World } from "./world.js";
+import { world, World } from "./logic/world.js";
 
 document.querySelector("#background-music").volume = 0.1;
 

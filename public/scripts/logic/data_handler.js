@@ -1,10 +1,10 @@
-import { chapter_data }  from "../data/chapter_data.js"
-import { character_data } from "../data/character_data.js"
-import { area_data } from "../data/area_data.js"
+import { chapter_data }  from "../../data/chapter_data.js"
+import { character_data } from "../../data/character_data.js"
+import { area_data } from "../../data/area_data.js"
 import { Chapter } from "./chapters.js"
-import { Effect } from "./effects.js"
-import { Character, DialogOption, Dialog} from "./characters.js"
-import { Area } from "./areas.js"
+import { Effect } from "./effects/Effect.js"
+import { Character, DialogOption, Dialog} from "./game_objects/Character.js"
+import { Area } from "./game_objects/Area.js"
 
 class DataHandler {
     static initData () {

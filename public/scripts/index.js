@@ -21,6 +21,7 @@ featureButtons[1].addEventListener("click", () => {
     switchFeature(1);
   },5000);
 });
+
 function switchFeature (change) {
   const featureSlides = document.querySelectorAll(".slide");
   featureIndex = (featureIndex+change+featureSlides.length)%featureSlides.length;
