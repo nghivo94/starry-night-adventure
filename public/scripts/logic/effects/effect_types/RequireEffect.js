@@ -12,11 +12,16 @@ export class RequireEffect extends Effect {
     }
 
     request_targets () {
-        return [{
+        let targets = [];
+        this.failureEffects.forEach(effect => {
+            targets = targets.concat(effect.request_targets);
+        });
+        targets.push({
             "type": this.requireType,
             "target": this.requireTarget,
             "modifier": this.modifier
-        }];
+        })
+        return targets;
     }
 
     perform_effect (targets) {
